@@ -1,5 +1,5 @@
 {
-	"name": "pipCopyCSVFile",
+	"name": "pipcopycsvfile",
 	"properties": {
 		"activities": [
 			{
