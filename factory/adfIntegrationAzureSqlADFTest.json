@@ -1,5 +1,13 @@
 {
 	"name": "adfIntegrationAzureSqlADFTest",
+	"properties": {
+		"globalParameters": {
+			"EnvironmentADF": {
+				"type": "string",
+				"value": "DESA"
+			}
+		}
+	},
 	"location": "brazilsouth",
 	"identity": {
 		"type": "SystemAssigned",
