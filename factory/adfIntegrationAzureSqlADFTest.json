@@ -5,6 +5,10 @@
 			"EnvironmentADF": {
 				"type": "string",
 				"value": "DESA"
+			},
+			"CountryCodeADF": {
+				"type": "string",
+				"value": "CO"
 			}
 		}
 	},
