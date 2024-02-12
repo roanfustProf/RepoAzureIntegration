@@ -1,0 +1,17 @@
+{
+	"name": "FilesAzureBlobStorage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lsazureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "source"
+			}
+		}
+	}
+}
