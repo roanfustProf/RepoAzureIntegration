@@ -24,28 +24,8 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"parameters": [
-								{
-									"name": "ExecuteLoadCode",
-									"type": "String",
-									"value": {
-										"value": "@pipeline().parameters.ExecuteLoadCode",
-										"type": "Expression"
-									},
-									"direction": "Input"
-								},
-								{
-									"name": "Enviroment",
-									"type": "String",
-									"value": {
-										"value": "@pipeline().parameters.Environment",
-										"type": "Expression"
-									},
-									"direction": "Input"
-								}
-							],
 							"type": "Query",
-							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF ?,?"
+							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
