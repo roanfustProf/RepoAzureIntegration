@@ -1,6 +1,12 @@
 {
 	"name": "lazurekv_desa_per",
 	"properties": {
+		"parameters": {
+			"ParamUrlKeyVault": {
+				"type": "string",
+				"defaultValue": "https://kvdesaper.vault.azure.net/"
+			}
+		},
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
