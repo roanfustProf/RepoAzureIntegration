@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Script1",
+				"name": "Load ExecuteLoadSequence",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Script1",
+						"activity": "Load ExecuteLoadSequence",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -93,6 +93,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"ExecuteLoadCode": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
