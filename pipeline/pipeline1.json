@@ -52,6 +52,9 @@
 				"defaultValue": "A"
 			}
 		},
+		"folder": {
+			"name": "YanbalPackages"
+		},
 		"annotations": []
 	}
 }

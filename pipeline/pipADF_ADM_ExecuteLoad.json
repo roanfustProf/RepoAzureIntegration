@@ -309,6 +309,9 @@
 				"defaultValue": "0"
 			}
 		},
+		"folder": {
+			"name": "YanbalPackages/YanbalODS_BusinessApp"
+		},
 		"annotations": []
 	}
 }

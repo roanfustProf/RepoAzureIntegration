@@ -98,6 +98,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "YanbalPackages/YanbalODS_BusinessApp"
+		},
 		"annotations": []
 	}
 }
