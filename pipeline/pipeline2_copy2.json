@@ -45,7 +45,7 @@
 				"typeProperties": {
 					"variableName": "VarUrlExecutePipeline",
 					"value": {
-						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, 'subscriptionId', pipeline().parameters.ParamSubscription), 'resourceGroup', pipeline().parameters.ParamResourceGroup),'pipelinename',pipeline().parameters.ParamPipelineNameADF),'adfName',pipeline().parameters.ParamInstanceNameADF)",
+						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@pipelinename',pipeline().parameters.ParamPipelineNameADF),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
 						"type": "Expression"
 					}
 				}
