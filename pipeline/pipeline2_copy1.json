@@ -3,37 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Ejecutar Pipeline",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "Set VarUrlExecutePipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"method": "POST",
-					"url": {
-						"value": "@variables('VarUrlExecutePipeline')",
-						"type": "Expression"
-					},
-					"authentication": {
-						"type": "MSI",
-						"resource": "https://management.azure.com"
-					}
-				}
-			},
-			{
 				"name": "Obtener valor RunId Pipeline",
 				"type": "SetVariable",
 				"dependsOn": [
@@ -195,8 +164,39 @@
 				"typeProperties": {
 					"variableName": "VarUrlStatusRunIdPipeline",
 					"value": {
-						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, 'subscriptionId', pipeline().parameters.ParamSubscription), 'resourceGroup', pipeline().parameters.ParamResourceGroup),'runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'adfName',pipeline().parameters.ParamInstanceNameADF)",
+						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Ejecutar Pipeline",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Set VarUrlExecutePipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": {
+						"value": "@variables('VarUrlExecutePipeline')",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com"
 					}
 				}
 			},
@@ -212,7 +212,7 @@
 				"typeProperties": {
 					"variableName": "VarUrlExecutePipeline",
 					"value": {
-						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, 'subscriptionId', pipeline().parameters.ParamSubscription), 'resourceGroup', pipeline().parameters.ParamResourceGroup),'pipelinename',pipeline().parameters.ParamPipelineNameADF),'adfName',pipeline().parameters.ParamInstanceNameADF)\n",
+						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@pipelinename',pipeline().parameters.ParamPipelineNameADF),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
 						"type": "Expression"
 					}
 				}
