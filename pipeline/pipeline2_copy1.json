@@ -75,7 +75,7 @@
 							}
 						},
 						{
-							"name": "Set variable1_copy1",
+							"name": "Set RunStatus Pipeline",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -93,17 +93,17 @@
 							"typeProperties": {
 								"variableName": "RunStatus",
 								"value": {
-									"value": "@string(activity('Ejecutar Pipeline').output.status)",
+									"value": "@string(activity('Obtener estado de ejecucion pipeline').output.status)",
 									"type": "Expression"
 								}
 							}
 						},
 						{
-							"name": "Set variable2",
+							"name": "Set pipeline finished",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Set variable1_copy1",
+									"activity": "Set RunStatus Pipeline",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -127,7 +127,7 @@
 							"type": "Wait",
 							"dependsOn": [
 								{
-									"activity": "Set variable2",
+									"activity": "Set pipeline finished",
 									"dependencyConditions": [
 										"Succeeded"
 									]
