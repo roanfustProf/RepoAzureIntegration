@@ -553,7 +553,7 @@
 					}
 				},
 				"folder": {
-					"name": "YanbalPackages"
+					"name": "YanbalPipelines"
 				},
 				"annotations": []
 			},
@@ -882,7 +882,7 @@
 					}
 				},
 				"folder": {
-					"name": "YanbalPackages/YanbalODS_BusinessApp"
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
 				},
 				"annotations": []
 			},
@@ -1102,7 +1102,7 @@
 					}
 				},
 				"folder": {
-					"name": "YanbalPackages/YanbalODS_BusinessApp"
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
 				},
 				"annotations": []
 			},
