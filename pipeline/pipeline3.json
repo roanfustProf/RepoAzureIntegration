@@ -12,7 +12,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "pipeline2",
+						"referenceName": "pipcopycsvfile_copy1",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
