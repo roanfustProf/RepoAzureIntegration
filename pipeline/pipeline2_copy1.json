@@ -111,19 +111,6 @@
 							}
 						},
 						{
-							"name": "If Condition1",
-							"type": "IfCondition",
-							"dependsOn": [
-								{
-									"activity": "Set variable2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": []
-						},
-						{
 							"name": "Set variable2",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -143,6 +130,25 @@
 								"variableName": "ExecutePipelineFinished",
 								"value": {
 									"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "Set variable2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": {
+									"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),1,5)",
 									"type": "Expression"
 								}
 							}
