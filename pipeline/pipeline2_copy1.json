@@ -134,7 +134,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "ExecutePipelineFinished",
-								"value": ""
+								"value": {
+									"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
+									"type": "Expression"
+								}
 							}
 						}
 					],
