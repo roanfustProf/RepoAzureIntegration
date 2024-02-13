@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Obtener valor RunId Pipeline",
+				"name": "Set RunId pipeline",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -31,13 +31,13 @@
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "Obtener valor RunId Pipeline",
+						"activity": "Set RunId pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "Set VarUrlStatusRunIdPipeline",
+						"activity": "Set Url Status Pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -189,7 +189,7 @@
 				}
 			},
 			{
-				"name": "Set VarUrlStatusRunIdPipeline",
+				"name": "Set Url Status Pipeline",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -217,7 +217,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Set VarUrlExecutePipeline",
+						"activity": "Set Url Execute Pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -244,7 +244,7 @@
 				}
 			},
 			{
-				"name": "Set VarUrlExecutePipeline",
+				"name": "Set Url Execute Pipeline",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
