@@ -45,7 +45,7 @@
 								}
 							],
 							"type": "Query",
-							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF ?,?"
+							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF ?,?;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
