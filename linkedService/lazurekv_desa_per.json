@@ -1,0 +1,10 @@
+{
+	"name": "lazurekv_desa_per",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kvdesaper.vault.azure.net/"
+		}
+	}
+}
