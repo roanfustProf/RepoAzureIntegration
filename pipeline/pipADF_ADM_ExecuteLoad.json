@@ -310,7 +310,7 @@
 			}
 		},
 		"folder": {
-			"name": "YanbalPackages/YanbalODS_BusinessApp"
+			"name": "YanbalPipelines/YanbalODS_BusinessApp"
 		},
 		"annotations": []
 	}
