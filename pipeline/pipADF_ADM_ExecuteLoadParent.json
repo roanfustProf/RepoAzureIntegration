@@ -24,8 +24,28 @@
 				"typeProperties": {
 					"scripts": [
 						{
+							"parameters": [
+								{
+									"name": "ExecuteLoadCode",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.ExecuteLoadCode",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "Enviroment",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.Environment",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
 							"type": "Query",
-							"text": "EXEC USP_SELECT_tmpselect"
+							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF ?,?"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -95,7 +115,12 @@
 		],
 		"parameters": {
 			"ExecuteLoadCode": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "ODS_BusinessApp"
+			},
+			"Environment": {
+				"type": "string",
+				"defaultValue": "DESA_PER"
 			}
 		},
 		"folder": {
