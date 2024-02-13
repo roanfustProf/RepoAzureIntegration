@@ -27,7 +27,7 @@
 				}
 			},
 			{
-				"name": "Until1",
+				"name": "Finalizacion ejecucion pipeline",
 				"type": "Until",
 				"dependsOn": [
 					{
