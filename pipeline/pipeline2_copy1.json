@@ -23,7 +23,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "POST",
-					"url": "https://management.azure.com/subscriptions/998fac29-2308-4c82-85bb-aef2aa738815/resourceGroups/rgTriggerPipelineADFfromAzureSql/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest/pipelines/pipcopycsvfile/createRun?api-version=2018-06-01",
+					"url": {
+						"value": "@variables('VarUrlExecutePipeline')",
+						"type": "Expression"
+					},
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://management.azure.com"
@@ -92,7 +95,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"method": "GET",
-								"url": "https://management.azure.com/subscriptions/998fac29-2308-4c82-85bb-aef2aa738815/resourceGroups/rgTriggerPipelineADFfromAzureSql/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest/pipelineruns/6defcc2f-4248-4512-9f7d-de5497163124?api-version=2018-06-01",
+								"url": {
+									"value": "@variables('VarUrlStatusRunIdPipeline')",
+									"type": "Expression"
+								},
 								"authentication": {
 									"type": "MSI",
 									"resource": "https://management.azure.com"
