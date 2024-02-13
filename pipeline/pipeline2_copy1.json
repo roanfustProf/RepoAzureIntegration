@@ -136,6 +136,10 @@
 			"ExecutePipelineFinished": {
 				"type": "String",
 				"defaultValue": "false"
+			},
+			"RunStatus": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"annotations": []
