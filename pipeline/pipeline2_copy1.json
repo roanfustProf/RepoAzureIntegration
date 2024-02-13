@@ -122,6 +122,20 @@
 								}
 							],
 							"userProperties": []
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "ExecutePipelineFinished",
+								"value": ""
+							}
 						}
 					],
 					"timeout": "0.00:02:00"
