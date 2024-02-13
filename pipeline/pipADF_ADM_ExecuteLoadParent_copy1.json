@@ -1,0 +1,70 @@
+{
+	"name": "pipADF_ADM_ExecuteLoadParent_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Load ExecuteLoadSequence",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": "desaperreportesgenerales"
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "ExecuteLoadCode",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.ExecuteLoadCode",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "Enviroment",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.Environment",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF ?,?"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"ExecuteLoadCode": {
+				"type": "string",
+				"defaultValue": "ODS_BusinessApp"
+			},
+			"Environment": {
+				"type": "string",
+				"defaultValue": "DESA_PER"
+			}
+		},
+		"folder": {
+			"name": "YanbalPipelines/YanbalODS_BusinessApp"
+		},
+		"annotations": []
+	}
+}
