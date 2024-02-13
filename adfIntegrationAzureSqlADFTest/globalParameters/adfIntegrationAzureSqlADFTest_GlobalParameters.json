@@ -1,1 +1,14 @@
-{}
+{
+	"EnvironmentADF": {
+		"type": "string",
+		"value": "DESA_CO"
+	},
+	"CountryCodeADF": {
+		"type": "string",
+		"value": "CO"
+	},
+	"Environment": {
+		"type": "string",
+		"value": "DESA"
+	}
+}

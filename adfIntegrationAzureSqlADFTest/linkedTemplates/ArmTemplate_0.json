@@ -10,12 +10,108 @@
 		"lsazureblobstorage_connectionString": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"lsazureblobstorage\""
+		},
+		"default_properties_EnvironmentADF_value": {
+			"type": "string",
+			"defaultValue": "DESA_CO"
+		},
+		"default_properties_CountryCodeADF_value": {
+			"type": "string",
+			"defaultValue": "CO"
+		},
+		"default_properties_Environment_value": {
+			"type": "string",
+			"defaultValue": "DESA"
+		},
+		"lazurekv_desa_per_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kvdesaper.vault.azure.net/"
+		},
+		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ParamDataSourceCode"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"EnvironmentADF": {
+					"type": "string",
+					"value": "[parameters('default_properties_EnvironmentADF_value')]"
+				},
+				"CountryCodeADF": {
+					"type": "string",
+					"value": "[parameters('default_properties_CountryCodeADF_value')]"
+				},
+				"Environment": {
+					"type": "string",
+					"value": "[parameters('default_properties_Environment_value')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://management.azure.com/subscriptions/998fac29-2308-4c82-85bb-aef2aa738815/resourceGroups/rgTriggerPipelineADFfromAzureSql/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest/pipelines/pipcopycsvfile/createRun?api-version=2018-06-01",
+							"body": {},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://management.azure.com"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lazurekv_desa_per')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ParamUrlKeyVault": {
+						"type": "string",
+						"defaultValue": "https://kvdesaper.vault.azure.net/"
+					}
+				},
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('lazurekv_desa_per_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/lsazureblobstorage')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -74,7 +170,41 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipcopycsvfile')]",
+			"name": "[concat(parameters('factoryName'), '/lsrcDestination')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ParamDataSourceCode": {
+						"type": "string",
+						"defaultValue": "desaperreportesgenerales"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "lazurekv_desa_per",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamUrlKeyVault": "https://kvdesaper.vault.azure.net/"
+							}
+						},
+						"secretName": {
+							"value": "[parameters('lsrcDestination_properties_typeProperties_connectionString_secretName')]",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lazurekv_desa_per')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipcopycsvfile_copy1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -134,6 +264,71 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/FilesAzureBlobStorage')]",
 				"[concat(variables('factoryId'), '/datasets/FilesDestinationAzureBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[USP_INSERT_tmpselect]",
+							"storedProcedureParameters": {
+								"ID": {
+									"value": {
+										"value": "@pipeline().parameters.ID_VALOR",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"VALOR": {
+									"value": {
+										"value": "@pipeline().parameters.VALOR_VALOR",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ID_VALOR": {
+						"type": "string",
+						"defaultValue": "1"
+					},
+					"VALOR_VALOR": {
+						"type": "string",
+						"defaultValue": "A"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
 			]
 		}
 	]

@@ -7,6 +7,21 @@
 		},
 		"lsazureblobstorage_connectionString": {
 			"value": ""
+		},
+		"lazurekv_desa_per_properties_typeProperties_baseUrl": {
+			"value": "https://kvdesaper.vault.azure.net/"
+		},
+		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
+			"value": "@linkedService().ParamDataSourceCode"
+		},
+		"default_properties_EnvironmentADF_value": {
+			"value": "DESA_CO"
+		},
+		"default_properties_CountryCodeADF_value": {
+			"value": "CO"
+		},
+		"default_properties_Environment_value": {
+			"value": "DESA"
 		}
 	}
 }

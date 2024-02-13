@@ -11,6 +11,26 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"lsazureblobstorage\""
 		},
+		"lazurekv_desa_per_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kvdesaper.vault.azure.net/"
+		},
+		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ParamDataSourceCode"
+		},
+		"default_properties_EnvironmentADF_value": {
+			"type": "string",
+			"defaultValue": "DESA_CO"
+		},
+		"default_properties_CountryCodeADF_value": {
+			"type": "string",
+			"defaultValue": "CO"
+		},
+		"default_properties_Environment_value": {
+			"type": "string",
+			"defaultValue": "DESA"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI de la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas."
@@ -40,6 +60,21 @@
 					},
 					"lsazureblobstorage_connectionString": {
 						"value": "[parameters('lsazureblobstorage_connectionString')]"
+					},
+					"default_properties_EnvironmentADF_value": {
+						"value": "[parameters('default_properties_EnvironmentADF_value')]"
+					},
+					"default_properties_CountryCodeADF_value": {
+						"value": "[parameters('default_properties_CountryCodeADF_value')]"
+					},
+					"default_properties_Environment_value": {
+						"value": "[parameters('default_properties_Environment_value')]"
+					},
+					"lazurekv_desa_per_properties_typeProperties_baseUrl": {
+						"value": "[parameters('lazurekv_desa_per_properties_typeProperties_baseUrl')]"
+					},
+					"lsrcDestination_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('lsrcDestination_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
