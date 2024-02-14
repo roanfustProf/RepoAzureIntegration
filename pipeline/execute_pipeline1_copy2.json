@@ -1,0 +1,41 @@
+{
+	"name": "execute_pipeline1_copy2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline1_copy1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID_VALOR": "2",
+						"VALOR_VALOR": "B"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"ID_VALOR": {
+				"type": "string",
+				"defaultValue": "1"
+			},
+			"VALOR_VALOR": {
+				"type": "string",
+				"defaultValue": "A"
+			}
+		},
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": []
+	}
+}
