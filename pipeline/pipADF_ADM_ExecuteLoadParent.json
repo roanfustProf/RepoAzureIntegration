@@ -98,23 +98,6 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "nuevo",
-					"value": {
-						"value": "@pipeline().globalParameters.CountryCodeADF",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"parameters": {
@@ -125,11 +108,6 @@
 			"Environment": {
 				"type": "string",
 				"defaultValue": "DESA_PER"
-			}
-		},
-		"variables": {
-			"nuevo": {
-				"type": "String"
 			}
 		},
 		"folder": {
