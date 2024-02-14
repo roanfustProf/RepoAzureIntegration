@@ -1,0 +1,87 @@
+{
+	"name": "pipeline5_copy2",
+	"properties": {
+		"activities": [
+			{
+				"name": "GET Step configuration",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@variables('vardsrcDestination')",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "EXEC [AdminPackage].[ExecuteLoadConfigurationStepADF] @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"param1": {
+				"type": "string",
+				"defaultValue": "@pipeline().globalParameters.CountryCodeADF"
+			},
+			"ParamEnvironment": {
+				"type": "string",
+				"defaultValue": "UAT_PER"
+			},
+			"ParamExecuteLoadCode": {
+				"type": "string",
+				"defaultValue": "ProcesarODS"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string",
+				"defaultValue": "1234"
+			}
+		},
+		"variables": {
+			"var1": {
+				"type": "String"
+			},
+			"var2": {
+				"type": "String"
+			},
+			"var3": {
+				"type": "String"
+			},
+			"vardsrcDestination": {
+				"type": "String",
+				"defaultValue": "desaperyanbalreportsods"
+			},
+			"ParamEnvironment": {
+				"type": "String",
+				"defaultValue": "DESA_PER"
+			},
+			"ParamExecuteLoadCode": {
+				"type": "String",
+				"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
+			}
+		},
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": []
+	}
+}
