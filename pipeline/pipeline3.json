@@ -54,6 +54,9 @@
 				"defaultValue": "0"
 			}
 		},
+		"folder": {
+			"name": "Test"
+		},
 		"annotations": []
 	}
 }
