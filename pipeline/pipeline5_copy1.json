@@ -14,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "var2",
 					"value": {
-						"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId:\"', pipeline().parameters.ParamExecuteLoadId,'\"}')",
+						"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\"}')",
 						"type": "Expression"
 					}
 				}
