@@ -3,23 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var1",
-					"value": {
-						"value": "@pipeline().parameters.param1",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Set variable2",
 				"type": "SetVariable",
 				"dependsOn": [],
@@ -31,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "var2",
 					"value": {
-						"value": "@{pipeline().parameters.ParamExecuteLoadCode} + @{pipeline().parameters.ParamEnvironment}",
+						"value": "@concat(pipeline().parameters.ParamExecuteLoadCode,pipeline().parameters.ParamEnvironment,'''')",
 						"type": "Expression"
 					}
 				}
