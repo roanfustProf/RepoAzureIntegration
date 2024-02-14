@@ -237,6 +237,10 @@
 						"value": "@variables('VarUrlExecutePipeline')",
 						"type": "Expression"
 					},
+					"body": {
+						"value": "@\"{}\"",
+						"type": "Expression"
+					},
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://management.azure.com"
