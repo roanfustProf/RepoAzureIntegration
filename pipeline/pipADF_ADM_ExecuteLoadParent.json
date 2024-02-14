@@ -296,6 +296,9 @@
 			"Environment": {
 				"type": "string",
 				"defaultValue": "DESA_PER"
+			},
+			"ExecuteLoadId": {
+				"type": "string"
 			}
 		},
 		"variables": {
