@@ -1,0 +1,39 @@
+{
+	"name": "pipeline5",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var1",
+					"value": {
+						"value": "@pipeline().parameters.param1",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"param1": {
+				"type": "string",
+				"defaultValue": "@{pipeline().globalParameters.CountryCodeADF} "
+			}
+		},
+		"variables": {
+			"var1": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "YanbalPipelines/YanbalODS_BusinessApp"
+		},
+		"annotations": []
+	}
+}
