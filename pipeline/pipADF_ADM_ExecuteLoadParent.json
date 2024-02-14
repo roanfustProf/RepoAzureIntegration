@@ -57,7 +57,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}",
+								"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
 								"type": "Expression"
 							}
 						}
@@ -289,15 +289,15 @@
 			}
 		],
 		"parameters": {
-			"ExecuteLoadCode": {
+			"ParamExecuteLoadCode": {
 				"type": "string",
 				"defaultValue": "ODS_BusinessApp"
 			},
-			"Environment": {
+			"ParamEnvironment": {
 				"type": "string",
 				"defaultValue": "DESA_PER"
 			},
-			"ExecuteLoadId": {
+			"ParamExecuteLoadId": {
 				"type": "string"
 			}
 		},

@@ -118,6 +118,17 @@
 				}
 			}
 		],
+		"parameters": {
+			"ParamExecuteLoadCode": {
+				"type": "string"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string"
+			},
+			"ParamEnvironment": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "YanbalPipelines/YanbalODS_BusinessApp"
 		},
