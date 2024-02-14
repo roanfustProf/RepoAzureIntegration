@@ -138,6 +138,9 @@
 			},
 			"ParamEnvironment": {
 				"type": "string"
+			},
+			"ParamCountryCode": {
+				"type": "string"
 			}
 		},
 		"folder": {
