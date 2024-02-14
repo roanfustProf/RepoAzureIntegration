@@ -52,6 +52,11 @@
 				"defaultValue": "0"
 			}
 		},
+		"variables": {
+			"Fecha": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Test"
 		},
