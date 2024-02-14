@@ -292,6 +292,9 @@
 			},
 			"ParamEnvironment": {
 				"type": "string"
+			},
+			"ParamCountryCode": {
+				"type": "string"
 			}
 		},
 		"variables": {
