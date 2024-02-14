@@ -85,52 +85,6 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Stored procedure1",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "USP_INSERT_tmpselect2",
-								"storedProcedureParameters": {
-									"SequenceExecuteLoadCode": {
-										"value": {
-											"value": "@item().SequenceExecuteLoadCode",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"SequenceExecution": {
-										"value": {
-											"value": "@item().SequenceExecution",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"SequencePipelineName": {
-										"value": {
-											"value": "@item().SequencePipelineName",
-											"type": "Expression"
-										},
-										"type": "String"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "lsrcDestination",
-								"type": "LinkedServiceReference",
-								"parameters": {
-									"ParamDataSourceCode": "desaperreportesgenerales"
-								}
-							}
-						},
-						{
 							"name": "Execute Child Pipeline",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
@@ -155,6 +109,22 @@
 									},
 									"ParamInstanceNameADF": {
 										"value": "@variables('varInstanceNameADF')",
+										"type": "Expression"
+									},
+									"ParamPipelineNameADF": {
+										"value": "@item().SequencePipelineName",
+										"type": "Expression"
+									},
+									"ParamUrlExecutePipeline": {
+										"value": "@variables('varUrlExecutePipeline')",
+										"type": "Expression"
+									},
+									"ParamUrlStatusRunIdPipeline": {
+										"value": "@variables('varUrlStatusRunIdPipeline')",
+										"type": "Expression"
+									},
+									"ParamExecuteLoadCode": {
+										"value": "@item().SequenceExecuteLoadCode",
 										"type": "Expression"
 									}
 								}
