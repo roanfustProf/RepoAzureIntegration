@@ -31,7 +31,8 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": "Query"
+							"type": "Query",
+							"text": "EXEC USP_INSERT_tmpselect3"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -105,6 +106,9 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[AdminPackage].[ExecuteLoadSequenceADF]"
+				},
 				"linkedServiceName": {
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
