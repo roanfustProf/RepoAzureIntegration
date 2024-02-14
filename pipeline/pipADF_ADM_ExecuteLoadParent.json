@@ -304,6 +304,10 @@
 			"ParamEnvironment": {
 				"type": "string",
 				"defaultValue": "DESA_PER"
+			},
+			"ParamCountryCode": {
+				"type": "string",
+				"defaultValue": "PE"
 			}
 		},
 		"variables": {
