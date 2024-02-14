@@ -200,6 +200,40 @@
 						"ParamDataSourceCode": "desaperreportesgenerales"
 					}
 				}
+			},
+			{
+				"name": "GET ADF configuration",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[AdminPackage].[GetConfigurationADFInstance]",
+						"storedProcedureParameters": {
+							"CountryCode": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().globalParameters.CountryCodeADF",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"parameters": {
