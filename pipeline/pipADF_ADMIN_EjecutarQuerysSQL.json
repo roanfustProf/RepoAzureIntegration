@@ -28,7 +28,7 @@
 			},
 			{
 				"name": "Start Process - Save Log",
-				"type": "Script",
+				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -39,13 +39,45 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"scripts": [],
-					"scriptBlockExecutionTimeout": "02:00:00"
+					"storedProcedureName": "[dbo].[SP_DFExecutionDetails]",
+					"storedProcedureParameters": {
+						"ErrorMessage": {
+							"value": "",
+							"type": "String"
+						},
+						"PL_Name": {
+							"value": "",
+							"type": "String"
+						},
+						"PL_RunId": {
+							"value": "",
+							"type": "String"
+						},
+						"PL_Status": {
+							"value": "",
+							"type": "String"
+						},
+						"RowRead": {
+							"value": "",
+							"type": "Int32"
+						},
+						"RowsWritten": {
+							"value": "",
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": "desaperreportesgenerales"
+					}
 				}
 			},
 			{
 				"name": "End Process - Save Log",
-				"type": "Script",
+				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
 						"activity": "Execute Query SQL",
@@ -61,11 +93,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
-				"typeProperties": {
-					"scripts": [],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
+				"userProperties": []
 			}
 		],
 		"folder": {
