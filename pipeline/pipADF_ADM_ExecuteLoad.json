@@ -238,7 +238,7 @@
 						"type": "Expression"
 					},
 					"body": {
-						"value": "@\"{}\"",
+						"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\"}')",
 						"type": "Expression"
 					},
 					"authentication": {
