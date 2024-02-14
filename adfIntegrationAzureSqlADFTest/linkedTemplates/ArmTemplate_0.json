@@ -1025,7 +1025,7 @@
 							"scripts": [
 								{
 									"type": "Query",
-									"text": "EXEC USP_SELECT_tmpselect"
+									"text": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}"
 								}
 							],
 							"scriptBlockExecutionTimeout": "02:00:00"
@@ -1065,16 +1065,23 @@
 									"typeProperties": {
 										"storedProcedureName": "USP_INSERT_tmpselect2",
 										"storedProcedureParameters": {
-											"ID": {
+											"SequenceExecuteLoadCode": {
 												"value": {
-													"value": "@item().ID",
+													"value": "@item().SequenceExecuteLoadCode",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SequenceExecution": {
+												"value": {
+													"value": "@item().SequenceExecution",
 													"type": "Expression"
 												},
 												"type": "Int32"
 											},
-											"VALOR": {
+											"SequencePipelineName": {
 												"value": {
-													"value": "@item().VALOR",
+													"value": "@item().SequencePipelineName",
 													"type": "Expression"
 												},
 												"type": "String"
@@ -1098,7 +1105,70 @@
 				},
 				"parameters": {
 					"ExecuteLoadCode": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "ODS_BusinessApp"
+					},
+					"Environment": {
+						"type": "string",
+						"defaultValue": "DESA_PER"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoadParent_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load ExecuteLoadSequence",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ExecuteLoadCode": {
+						"type": "string",
+						"defaultValue": "ODS_BusinessApp"
+					},
+					"Environment": {
+						"type": "string",
+						"defaultValue": "DESA_PER"
 					}
 				},
 				"folder": {
