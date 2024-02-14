@@ -1731,15 +1731,24 @@
 							"storedProcedureName": "[[dbo].[USP_INSERT_tmpselect12]",
 							"storedProcedureParameters": {
 								"ParamEnvironment": {
-									"value": "",
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
 									"type": "String"
 								},
 								"ParamExecuteLoadCode": {
-									"value": "",
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadCode",
+										"type": "Expression"
+									},
 									"type": "String"
 								},
 								"ParamExecuteLoadId": {
-									"value": "",
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
 									"type": "Int32"
 								}
 							}
