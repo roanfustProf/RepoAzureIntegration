@@ -14,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "var2",
 					"value": {
-						"value": "@concat(pipeline().parameters.ParamExecuteLoadCode,pipeline().parameters.ParamEnvironment,'''')",
+						"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId:\"', pipeline().parameters.ParamExecuteLoadId,'\"}')",
 						"type": "Expression"
 					}
 				}
@@ -32,6 +32,10 @@
 			"ParamExecuteLoadCode": {
 				"type": "string",
 				"defaultValue": "ProcesarODS"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string",
+				"defaultValue": "1234"
 			}
 		},
 		"variables": {
