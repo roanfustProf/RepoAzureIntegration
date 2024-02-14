@@ -56,7 +56,10 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}"
+							"text": {
+								"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -124,6 +127,36 @@
 								"type": "LinkedServiceReference",
 								"parameters": {
 									"ParamDataSourceCode": "desaperreportesgenerales"
+								}
+							}
+						},
+						{
+							"name": "Execute Child Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pipADF_ADM_ExecuteLoad",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ParamSubscription": {
+										"value": "@variables('varSubscription')",
+										"type": "Expression"
+									},
+									"ParamResourceGroup": {
+										"value": "@variables('varResourceGroup')",
+										"type": "Expression"
+									},
+									"ParamInstanceNameADF": {
+										"value": "@variables('varInstanceNameADF')",
+										"type": "Expression"
+									}
 								}
 							}
 						}
