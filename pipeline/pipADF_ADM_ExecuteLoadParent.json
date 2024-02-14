@@ -133,12 +133,26 @@
 			{
 				"name": "Set varSubscription",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GET ADF configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varSubscription",
+					"value": {
+						"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Set varResourceGroup",
@@ -155,7 +169,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varResourceGroup",
+					"value": {
+						"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Set varUrlExecutePipeline",
@@ -172,7 +193,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varUrlExecutePipeline",
+					"value": {
+						"value": "@string(activity('GET ADF configuration').output.firstRow.UrlExecutePipeline)",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Set varInstanceNameADF",
@@ -189,7 +217,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varInstanceNameADF",
+					"value": {
+						"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Set varUrlStatusRunIdPipeline",
@@ -206,7 +241,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "varUrlStatusRunIdPipeline",
+					"value": {
+						"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "GET ADF configuration",
