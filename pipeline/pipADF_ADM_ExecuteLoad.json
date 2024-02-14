@@ -285,6 +285,9 @@
 			"ParamUrlStatusRunIdPipeline": {
 				"type": "string",
 				"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelineruns/@runidpipeline?api-version=2018-06-01"
+			},
+			"ParamExecuteLoadCode": {
+				"type": "string"
 			}
 		},
 		"variables": {
