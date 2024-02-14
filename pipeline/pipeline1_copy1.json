@@ -45,11 +45,11 @@
 		"parameters": {
 			"ID_VALOR": {
 				"type": "string",
-				"defaultValue": "1"
+				"defaultValue": "0"
 			},
 			"VALOR_VALOR": {
 				"type": "string",
-				"defaultValue": "A"
+				"defaultValue": "0"
 			}
 		},
 		"folder": {
