@@ -89,15 +89,21 @@
 							"type": "DateTime"
 						},
 						"LogEventType": {
-							"value": "",
+							"value": "1",
 							"type": "Int16"
 						},
 						"PackageName": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"TaskName": {
-							"value": "",
+							"value": {
+								"value": "@concat('Start Process - Save Log')",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
@@ -130,7 +136,62 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[AdminPackage].[ExecuteLoadSequenceADF]"
+					"storedProcedureName": "[AdminPackage].[CaptureLogPackage]",
+					"storedProcedureParameters": {
+						"Comments": {
+							"value": {
+								"value": "@concat('Package End Proces','')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"CountryCode": {
+							"value": {
+								"value": "@pipeline().parameters.ParamCountryCode",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Enviroment": {
+							"value": {
+								"value": "@pipeline().parameters.ParamEnvironment",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"ExecuteLoadConfiguration": {
+							"value": {
+								"value": "@pipeline().parameters.ParamExecuteLoadCode",
+								"type": "Expression"
+							},
+							"type": "Int16"
+						},
+						"LoadDateSSIS": {
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"LogEventType": {
+							"value": "1",
+							"type": "Int16"
+						},
+						"PackageName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TaskName": {
+							"value": {
+								"value": "@concat('End Process - Save Log')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "lsrcDestination",
