@@ -130,6 +130,10 @@
 									"ParamExecuteLoadId": {
 										"value": "@item().SequenceExecuteLoadId",
 										"type": "Expression"
+									},
+									"ParamEnvironment": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
 									}
 								}
 							}
