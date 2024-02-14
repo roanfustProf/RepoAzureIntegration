@@ -5,7 +5,14 @@
 			{
 				"name": "Set variable2",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable3",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -35,6 +42,48 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "GET Step configuration",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@variables('vardsrcDestination')",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "EXEC [AdminPackage].[ExecuteLoadConfigurationStepADF] @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"parameters": {
@@ -61,6 +110,21 @@
 			},
 			"var2": {
 				"type": "String"
+			},
+			"var3": {
+				"type": "String"
+			},
+			"vardsrcDestination": {
+				"type": "String",
+				"defaultValue": "desaperyanbalreportsods"
+			},
+			"ParamEnvironment": {
+				"type": "String",
+				"defaultValue": "DESA_PER"
+			},
+			"ParamExecuteLoadCode": {
+				"type": "String",
+				"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
 			}
 		},
 		"folder": {
