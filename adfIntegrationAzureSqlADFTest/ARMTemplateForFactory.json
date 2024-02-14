@@ -279,7 +279,10 @@
 								"value": "@variables('VarUrlExecutePipeline')",
 								"type": "Expression"
 							},
-							"body": {},
+							"body": {
+								"value": "@\"{}\"",
+								"type": "Expression"
+							},
 							"authentication": {
 								"type": "MSI",
 								"resource": "https://management.azure.com"
@@ -431,7 +434,7 @@
 								{
 									"type": "Query",
 									"text": {
-										"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ExecuteLoadCode} , @{pipeline().parameters.Environment}",
+										"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
 										"type": "Expression"
 									}
 								}
@@ -499,6 +502,10 @@
 											},
 											"ParamExecuteLoadCode": {
 												"value": "@item().SequenceExecuteLoadCode",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadId": {
+												"value": "@item().SequenceExecuteLoadId",
 												"type": "Expression"
 											}
 										}
@@ -667,16 +674,13 @@
 					"elapsedTimeMetric": {}
 				},
 				"parameters": {
-					"ExecuteLoadCode": {
+					"ParamExecuteLoadCode": {
 						"type": "string",
 						"defaultValue": "ODS_BusinessApp"
 					},
-					"Environment": {
+					"ParamEnvironment": {
 						"type": "string",
 						"defaultValue": "DESA_PER"
-					},
-					"ExecuteLoadId": {
-						"type": "string"
 					}
 				},
 				"variables": {
@@ -1653,6 +1657,17 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamExecuteLoadCode": {
+						"type": "string"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string"
+					},
+					"ParamEnvironment": {
+						"type": "string"
+					}
 				},
 				"folder": {
 					"name": "YanbalPipelines/YanbalODS_BusinessApp"
