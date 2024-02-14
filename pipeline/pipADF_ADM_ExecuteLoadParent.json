@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Script1').output.resultSets[0].rows",
+						"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
 						"type": "Expression"
 					},
 					"isSequential": true,
