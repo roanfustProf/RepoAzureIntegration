@@ -126,6 +126,10 @@
 									"ParamExecuteLoadCode": {
 										"value": "@item().SequenceExecuteLoadCode",
 										"type": "Expression"
+									},
+									"ParamExecuteLoadId": {
+										"value": "@item().SequenceExecuteLoadId",
+										"type": "Expression"
 									}
 								}
 							}
@@ -296,9 +300,6 @@
 			"ParamEnvironment": {
 				"type": "string",
 				"defaultValue": "DESA_PER"
-			},
-			"ParamExecuteLoadId": {
-				"type": "string"
 			}
 		},
 		"variables": {
