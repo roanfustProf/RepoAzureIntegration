@@ -143,7 +143,14 @@
 			{
 				"name": "Set varResourceGroup",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GET ADF configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -153,7 +160,14 @@
 			{
 				"name": "Set varUrlExecutePipeline",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GET ADF configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -163,7 +177,14 @@
 			{
 				"name": "Set varInstanceNameADF",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GET ADF configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -173,7 +194,14 @@
 			{
 				"name": "Set varUrlStatusRunIdPipeline",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GET ADF configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -181,7 +209,7 @@
 				"userProperties": []
 			},
 			{
-				"name": "Lookup1",
+				"name": "GET ADF configuration",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
