@@ -5,7 +5,38 @@
 			{
 				"name": "Load ExecuteLoadSequence",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set varSubscription",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set varResourceGroup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set varUrlExecutePipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set varInstanceNameADF",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set varUrlStatusRunIdPipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -98,6 +129,56 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set varSubscription",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Set varResourceGroup",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Set varUrlExecutePipeline",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Set varInstanceNameADF",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Set varUrlStatusRunIdPipeline",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"parameters": {
@@ -108,6 +189,28 @@
 			"Environment": {
 				"type": "string",
 				"defaultValue": "DESA_PER"
+			}
+		},
+		"variables": {
+			"varSubscription": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"varResourceGroup": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"varInstanceNameADF": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"varUrlExecutePipeline": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"varUrlStatusRunIdPipeline": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"folder": {
