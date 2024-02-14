@@ -61,15 +61,24 @@
 							"type": "String"
 						},
 						"CountryCode": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().parameters.ParamCountryCode",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"Enviroment": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().parameters.ParamEnvironment",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"ExecuteLoadConfiguration": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().parameters.ParamExecuteLoadCode",
+								"type": "Expression"
+							},
 							"type": "Int16"
 						},
 						"LoadDateSSIS": {
