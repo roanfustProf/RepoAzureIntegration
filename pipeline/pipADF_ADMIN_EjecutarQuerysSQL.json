@@ -51,31 +51,42 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[SP_DFExecutionDetails]",
+					"storedProcedureName": "[AdminPackage].[CaptureLogPackage]",
 					"storedProcedureParameters": {
-						"ErrorMessage": {
+						"Comments": {
+							"value": {
+								"value": "@concat('Package Start Process','')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"CountryCode": {
 							"value": "",
 							"type": "String"
 						},
-						"PL_Name": {
+						"Enviroment": {
 							"value": "",
 							"type": "String"
 						},
-						"PL_RunId": {
+						"ExecuteLoadConfiguration": {
+							"value": "",
+							"type": "Int16"
+						},
+						"LoadDateSSIS": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"LogEventType": {
+							"value": "",
+							"type": "Int16"
+						},
+						"PackageName": {
 							"value": "",
 							"type": "String"
 						},
-						"PL_Status": {
+						"TaskName": {
 							"value": "",
 							"type": "String"
-						},
-						"RowRead": {
-							"value": "",
-							"type": "Int32"
-						},
-						"RowsWritten": {
-							"value": "",
-							"type": "Int32"
 						}
 					}
 				},
