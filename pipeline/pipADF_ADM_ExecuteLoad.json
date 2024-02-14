@@ -295,6 +295,9 @@
 			},
 			"ParamExecuteLoadId": {
 				"type": "string"
+			},
+			"ParamEnvironment": {
+				"type": "string"
 			}
 		},
 		"variables": {
