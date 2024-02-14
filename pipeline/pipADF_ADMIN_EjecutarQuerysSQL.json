@@ -68,6 +68,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "YanbalPipelines/YanbalODS_BusinessApp"
+		},
 		"annotations": []
 	}
 }
