@@ -134,6 +134,10 @@
 									"ParamEnvironment": {
 										"value": "@pipeline().parameters.ParamEnvironment",
 										"type": "Expression"
+									},
+									"ParamCountryCode": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
 									}
 								}
 							}
