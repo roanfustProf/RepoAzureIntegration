@@ -7,7 +7,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Start Process - Save Log",
+						"activity": "GET Step configuration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -25,14 +25,20 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@variables('vardsrcDestination')",
+							"type": "Expression"
+						}
 					}
 				},
 				"typeProperties": {
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "EXEC USP_INSERT_tmpselect3"
+							"text": {
+								"value": "@variables('varExecuteQuery')",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -202,9 +208,16 @@
 				}
 			},
 			{
-				"name": "GET ADF configuration",
+				"name": "GET Step configuration",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start Process - Save Log",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -216,12 +229,19 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[AdminPackage].[GetConfigurationADFInstance]",
+						"sqlReaderStoredProcedureName": "[AdminPackage].[ExecuteLoadConfigurationStepADF]",
 						"storedProcedureParameters": {
-							"CountryCode": {
+							"Enviroment": {
 								"type": "String",
 								"value": {
-									"value": "@pipeline().globalParameters.CountryCodeADF",
+									"value": "@pipeline().parameters.ParamEnvironment",
+									"type": "Expression"
+								}
+							},
+							"ExecuteLoadCode": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.ParamExecuteLoadCode",
 									"type": "Expression"
 								}
 							}
@@ -248,6 +268,35 @@
 			},
 			"ParamCountryCode": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"vardsrcDestination": {
+				"type": "String"
+			},
+			"vardsrcIntegration": {
+				"type": "String"
+			},
+			"vardsrcMail": {
+				"type": "String"
+			},
+			"varExecuteQuery": {
+				"type": "String"
+			},
+			"varSendMailFrom": {
+				"type": "String"
+			},
+			"varSendMailMessage": {
+				"type": "String"
+			},
+			"varSendMailSubject": {
+				"type": "String"
+			},
+			"varSendMailTo": {
+				"type": "String"
+			},
+			"varSendMailToCC": {
+				"type": "String"
 			}
 		},
 		"folder": {
