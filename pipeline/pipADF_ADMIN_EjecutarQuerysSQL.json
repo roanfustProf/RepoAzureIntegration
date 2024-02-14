@@ -82,7 +82,10 @@
 							"type": "Int16"
 						},
 						"LoadDateSSIS": {
-							"value": "",
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						},
 						"LogEventType": {
