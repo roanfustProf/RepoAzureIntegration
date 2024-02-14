@@ -23,7 +23,7 @@
 		"parameters": {
 			"param1": {
 				"type": "string",
-				"defaultValue": "@{pipeline().globalParameters.CountryCodeADF} "
+				"defaultValue": "@pipeline().globalParameters.CountryCodeADF"
 			}
 		},
 		"variables": {
