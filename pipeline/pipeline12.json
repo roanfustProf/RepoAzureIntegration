@@ -1,0 +1,50 @@
+{
+	"name": "pipeline12",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://management.azure.com/subscriptions/998fac29-2308-4c82-85bb-aef2aa738815/resourceGroups/rgTriggerPipelineADFfromAzureSql/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest/pipelines/pipeline1_copy1/createRun?api-version=2018-06-01",
+					"body": {
+						"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\"}')",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"ParamExecuteLoadCode": {
+				"type": "string",
+				"defaultValue": "PROCESO_ODS12"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string",
+				"defaultValue": "234"
+			},
+			"ParamEnvironment": {
+				"type": "string",
+				"defaultValue": "DESA_PER"
+			}
+		},
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": []
+	}
+}
