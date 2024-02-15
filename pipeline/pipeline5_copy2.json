@@ -36,6 +36,30 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GET Step configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var1",
+					"value": {
+						"value": "@activity('GET Step configuration').output.resultSets[0]['rows'][0].Parameter",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -45,11 +69,11 @@
 			},
 			"ParamEnvironment": {
 				"type": "string",
-				"defaultValue": "UAT_PER"
+				"defaultValue": "DESA_PER"
 			},
 			"ParamExecuteLoadCode": {
 				"type": "string",
-				"defaultValue": "ProcesarODS"
+				"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
 			},
 			"ParamExecuteLoadId": {
 				"type": "string",
