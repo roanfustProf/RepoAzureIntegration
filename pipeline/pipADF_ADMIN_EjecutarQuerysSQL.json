@@ -7,7 +7,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "GET Step configuration",
+						"activity": "GET Step configurationw",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -118,7 +118,10 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -208,7 +211,7 @@
 				}
 			},
 			{
-				"name": "GET Step configuration",
+				"name": "GET Step configurationw",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -254,6 +257,41 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "GET Step configuration",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@variables('vardsrcDestination')",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "EXEC [AdminPackage].[ExecuteLoadConfigurationStepADF] @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"parameters": {
@@ -267,6 +305,9 @@
 				"type": "string"
 			},
 			"ParamCountryCode": {
+				"type": "string"
+			},
+			"ParamdsrcIntegration": {
 				"type": "string"
 			}
 		},
