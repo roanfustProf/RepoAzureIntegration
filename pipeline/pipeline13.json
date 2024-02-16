@@ -1,0 +1,46 @@
+{
+	"name": "pipeline13",
+	"properties": {
+		"activities": [
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": "desaperreportesgenerales"
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "EXEC USP_LEERLISTA @{pipeline().parameters.ParamID}"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"ParamID": {
+				"type": "string",
+				"defaultValue": "1"
+			}
+		},
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": []
+	}
+}
