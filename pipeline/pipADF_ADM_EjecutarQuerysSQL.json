@@ -234,7 +234,7 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"ParamDataSourceCode": {
-							"value": "@variables('vardsrcDestination')",
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
 							"type": "Expression"
 						}
 					}
