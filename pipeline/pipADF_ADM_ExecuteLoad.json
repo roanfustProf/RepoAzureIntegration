@@ -252,6 +252,9 @@
 			},
 			"ParamCountryCode": {
 				"type": "string"
+			},
+			"ParamdsrcIntegration": {
+				"type": "string"
 			}
 		},
 		"variables": {
