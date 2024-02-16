@@ -5,7 +5,14 @@
 			{
 				"name": "Execute Query SQL",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Generar lista parametros",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -244,6 +251,69 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "Generar lista parametros",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GET Step configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GET Step configuration').output.resultSets[0].rows",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "get parameter",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "varParameter",
+								"value": {
+									"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().clave,'\":\"',item().valor,'\"}'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Add parameter to json parameters",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "get parameter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "varListParameters",
+								"value": {
+									"value": "@variables('varParameter')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
@@ -264,11 +334,12 @@
 			}
 		},
 		"variables": {
-			"ParamListParameterKey": {
-				"type": "Array"
+			"varListParameters": {
+				"type": "String",
+				"defaultValue": "{}"
 			},
-			"ParamListParameterValue": {
-				"type": "Array"
+			"varParameter": {
+				"type": "String"
 			}
 		},
 		"folder": {
