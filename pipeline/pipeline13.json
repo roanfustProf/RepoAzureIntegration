@@ -51,27 +51,18 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Arrray agregar clave",
-							"type": "AppendVariable",
+							"name": "Set variable2",
+							"type": "SetVariable",
 							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "listaClaves",
+								"variableName": "listajson2",
 								"value": {
-									"value": "@item().clave",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Arrray agregar valor",
-							"type": "AppendVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "listaValor",
-								"value": {
-									"value": "@item().valor",
+									"value": "@string(union(json(variables('listajson')),json(concat('{\"',item().clave,'\":\"',item().valor,'\"}'))))",
 									"type": "Expression"
 								}
 							}
@@ -96,7 +87,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "lista",
+					"variableName": "listajson",
 					"value": {
 						"value": "@variables('listaClaves')",
 						"type": "Expression"
@@ -119,8 +110,9 @@
 				"type": "Array",
 				"defaultValue": []
 			},
-			"lista": {
-				"type": "Array"
+			"listajson": {
+				"type": "String",
+				"defaultValue": "{}"
 			},
 			"var1": {
 				"type": "String"
@@ -128,6 +120,9 @@
 			"indice1": {
 				"type": "Integer",
 				"defaultValue": 0
+			},
+			"listajson2": {
+				"type": "String"
 			}
 		},
 		"folder": {
