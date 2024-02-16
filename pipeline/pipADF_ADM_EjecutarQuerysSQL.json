@@ -318,19 +318,24 @@
 		],
 		"parameters": {
 			"ParamExecuteLoadCode": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
 			},
 			"ParamExecuteLoadId": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "27201"
 			},
 			"ParamEnvironment": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DESA_PER"
 			},
 			"ParamCountryCode": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "PE"
 			},
 			"ParamdsrcIntegration": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "desaperreportesgenerales"
 			}
 		},
 		"variables": {
