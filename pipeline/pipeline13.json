@@ -126,8 +126,8 @@
 				"type": "String"
 			},
 			"indice1": {
-				"type": "String",
-				"defaultValue": "0"
+				"type": "Integer",
+				"defaultValue": 0
 			}
 		},
 		"folder": {
