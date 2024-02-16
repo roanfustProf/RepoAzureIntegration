@@ -30,12 +30,62 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Script1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Script1').output.resultSets[0].rows",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Arrray agregar clave",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "listaClaves",
+								"value": ""
+							}
+						},
+						{
+							"name": "Arrray agregar valor",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "listaClaves",
+								"value": ""
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
 			"ParamID": {
 				"type": "string",
 				"defaultValue": "1"
+			}
+		},
+		"variables": {
+			"listaClaves": {
+				"type": "Array"
+			},
+			"listaValor": {
+				"type": "Array"
 			}
 		},
 		"folder": {
