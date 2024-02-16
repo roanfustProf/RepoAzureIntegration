@@ -96,9 +96,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var1",
+					"variableName": "lista",
 					"value": {
-						"value": "@variables('listaClaves')[variables('indice1')]",
+						"value": "@variables('listaClaves')",
 						"type": "Expression"
 					}
 				}

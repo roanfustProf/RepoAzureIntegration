@@ -5,14 +5,7 @@
 			{
 				"name": "Execute Query SQL",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "GET Step configurationw",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -211,8 +204,8 @@
 				}
 			},
 			{
-				"name": "GET Step configurationw",
-				"type": "Lookup",
+				"name": "GET Step configuration",
+				"type": "Script",
 				"dependsOn": [
 					{
 						"activity": "Start Process - Save Log",
@@ -221,47 +214,6 @@
 						]
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[AdminPackage].[ExecuteLoadConfigurationStepADF]",
-						"storedProcedureParameters": {
-							"Enviroment": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.ParamEnvironment",
-									"type": "Expression"
-								}
-							},
-							"ExecuteLoadCode": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.ParamExecuteLoadCode",
-									"type": "Expression"
-								}
-							}
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
-				"name": "GET Step configuration",
-				"type": "Script",
-				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -312,32 +264,11 @@
 			}
 		},
 		"variables": {
-			"vardsrcDestination": {
-				"type": "String"
+			"ParamListParameterKey": {
+				"type": "Array"
 			},
-			"vardsrcIntegration": {
-				"type": "String"
-			},
-			"vardsrcMail": {
-				"type": "String"
-			},
-			"varExecuteQuery": {
-				"type": "String"
-			},
-			"varSendMailFrom": {
-				"type": "String"
-			},
-			"varSendMailMessage": {
-				"type": "String"
-			},
-			"varSendMailSubject": {
-				"type": "String"
-			},
-			"varSendMailTo": {
-				"type": "String"
-			},
-			"varSendMailToCC": {
-				"type": "String"
+			"ParamListParameterValue": {
+				"type": "Array"
 			}
 		},
 		"folder": {
