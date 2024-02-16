@@ -103,7 +103,8 @@
 		},
 		"variables": {
 			"req": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "{}"
 			},
 			"temp": {
 				"type": "String"
