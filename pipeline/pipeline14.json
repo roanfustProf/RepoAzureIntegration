@@ -5,7 +5,14 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable3",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -81,6 +88,23 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ejem",
+					"value": {
+						"value": "@string(length(pipeline().parameters.keys))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -110,6 +134,9 @@
 				"type": "String"
 			},
 			"valor": {
+				"type": "String"
+			},
+			"ejem": {
 				"type": "String"
 			}
 		},
