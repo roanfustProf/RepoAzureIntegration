@@ -5,7 +5,14 @@
 			{
 				"name": "Script1",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Append variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -78,6 +85,19 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "lista",
+					"value": {
+						"value": "@concat('p','o')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -92,6 +112,10 @@
 				"defaultValue": []
 			},
 			"listaValor": {
+				"type": "Array",
+				"defaultValue": []
+			},
+			"lista": {
 				"type": "Array",
 				"defaultValue": []
 			}
