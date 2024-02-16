@@ -1,6 +1,104 @@
 {
 	"name": "pipeline14",
 	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "req",
+					"value": "{}"
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@range(0,length(pipeline().parameters.keys))",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "build each key value pair",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "temp",
+								"value": {
+									"value": "@string(union(json(variables('req')),json(concat('{\"',pipeline().parameters.keys[item()],'\":\"',pipeline().parameters.values[item()],'\"}'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "assign final outcome",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "build each key value pair",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"keys": {
+				"type": "array",
+				"defaultValue": [
+					"Key1",
+					"Key2",
+					"Key3"
+				]
+			},
+			"values": {
+				"type": "array",
+				"defaultValue": [
+					"value1",
+					"value2",
+					"value3"
+				]
+			}
+		},
+		"variables": {
+			"req": {
+				"type": "String"
+			},
+			"temp": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Test"
 		},
