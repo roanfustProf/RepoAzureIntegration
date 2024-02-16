@@ -410,24 +410,19 @@
 				},
 				"parameters": {
 					"ParamExecuteLoadCode": {
-						"type": "string",
-						"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
+						"type": "string"
 					},
 					"ParamExecuteLoadId": {
-						"type": "string",
-						"defaultValue": "27201"
+						"type": "string"
 					},
 					"ParamEnvironment": {
-						"type": "string",
-						"defaultValue": "DESA_PER"
+						"type": "string"
 					},
 					"ParamCountryCode": {
-						"type": "string",
-						"defaultValue": "PE"
+						"type": "string"
 					},
 					"ParamdsrcIntegration": {
-						"type": "string",
-						"defaultValue": "desaperreportesgenerales"
+						"type": "string"
 					}
 				},
 				"variables": {
@@ -3282,6 +3277,46 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/lazurekv_desa_per')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline15')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var1",
+							"value": {
+								"value": "@concat('2')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"var1": {
+						"type": "String",
+						"defaultValue": "1"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/default')]",
