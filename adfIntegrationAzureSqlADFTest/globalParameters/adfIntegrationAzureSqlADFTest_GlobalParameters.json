@@ -1,11 +1,11 @@
 {
 	"EnvironmentADF": {
 		"type": "string",
-		"value": "DESA_CO"
+		"value": "DESA_PER"
 	},
 	"CountryCodeADF": {
 		"type": "string",
-		"value": "CO"
+		"value": "PE"
 	},
 	"Environment": {
 		"type": "string",

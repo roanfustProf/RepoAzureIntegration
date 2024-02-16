@@ -21,11 +21,11 @@
 		},
 		"default_properties_EnvironmentADF_value": {
 			"type": "string",
-			"defaultValue": "DESA_CO"
+			"defaultValue": "DESA_PER"
 		},
 		"default_properties_CountryCodeADF_value": {
 			"type": "string",
-			"defaultValue": "CO"
+			"defaultValue": "PE"
 		},
 		"default_properties_Environment_value": {
 			"type": "string",

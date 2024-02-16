@@ -15,10 +15,10 @@
 			"value": "@linkedService().ParamDataSourceCode"
 		},
 		"default_properties_EnvironmentADF_value": {
-			"value": "DESA_CO"
+			"value": "DESA_PER"
 		},
 		"default_properties_CountryCodeADF_value": {
-			"value": "CO"
+			"value": "PE"
 		},
 		"default_properties_Environment_value": {
 			"value": "DESA"
