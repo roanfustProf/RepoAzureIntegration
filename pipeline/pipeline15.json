@@ -1,6 +1,31 @@
 {
 	"name": "pipeline15",
 	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var1",
+					"value": {
+						"value": "@concat('2')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"var1": {
+				"type": "String",
+				"defaultValue": "1"
+			}
+		},
 		"folder": {
 			"name": "YanbalPipelines/YanbalODS_BusinessApp"
 		},
