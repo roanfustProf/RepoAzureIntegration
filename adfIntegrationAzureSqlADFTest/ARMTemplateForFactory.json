@@ -171,7 +171,7 @@
 								},
 								"ExecuteLoadConfiguration": {
 									"value": {
-										"value": "@pipeline().parameters.ParamExecuteLoadCode",
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
 										"type": "Expression"
 									},
 									"type": "Int16"
@@ -259,7 +259,7 @@
 								},
 								"ExecuteLoadConfiguration": {
 									"value": {
-										"value": "@pipeline().parameters.ParamExecuteLoadCode",
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
 										"type": "Expression"
 									},
 									"type": "Int16"
@@ -372,7 +372,7 @@
 									"typeProperties": {
 										"variableName": "varParameter",
 										"value": {
-											"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().clave,'\":\"',item().valor,'\"}'))))",
+											"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().Parameter,'\":\"',item().ParameterValue,'\"}'))))",
 											"type": "Expression"
 										}
 									}
@@ -410,19 +410,24 @@
 				},
 				"parameters": {
 					"ParamExecuteLoadCode": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
 					},
 					"ParamExecuteLoadId": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "27201"
 					},
 					"ParamEnvironment": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "DESA_PER"
 					},
 					"ParamCountryCode": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "PE"
 					},
 					"ParamdsrcIntegration": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "desaperreportesgenerales"
 					}
 				},
 				"variables": {
