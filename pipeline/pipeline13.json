@@ -66,6 +66,30 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Set variable3",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set variable2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "listajson",
+								"value": {
+									"value": "@variables('listajson2')",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
