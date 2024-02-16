@@ -113,7 +113,7 @@
 				"typeProperties": {
 					"variableName": "var1",
 					"value": {
-						"value": "@json(variables('listajson')).clave1",
+						"value": "@json(variables('listajson')).clave2",
 						"type": "Expression"
 					}
 				}
