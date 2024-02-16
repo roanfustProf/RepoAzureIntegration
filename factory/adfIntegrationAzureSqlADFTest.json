@@ -4,7 +4,7 @@
 		"globalParameters": {
 			"EnvironmentADF": {
 				"type": "string",
-				"value": "DESA_CO"
+				"value": "DESA_PER"
 			},
 			"CountryCodeADF": {
 				"type": "string",
