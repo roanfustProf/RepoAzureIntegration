@@ -57,7 +57,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "listaClaves",
-								"value": ""
+								"value": {
+									"value": "@item().clave",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -67,7 +70,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "listaValor",
-								"value": ""
+								"value": {
+									"value": "@item().valor",
+									"type": "Expression"
+								}
 							}
 						}
 					]
