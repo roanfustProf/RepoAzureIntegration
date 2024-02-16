@@ -138,6 +138,10 @@
 									"ParamCountryCode": {
 										"value": "@pipeline().parameters.ParamCountryCode",
 										"type": "Expression"
+									},
+									"ParamdsrcIntegration": {
+										"value": "@item().dsrcIntegration",
+										"type": "Expression"
 									}
 								}
 							}
