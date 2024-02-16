@@ -111,9 +111,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "listajson",
+					"variableName": "var1",
 					"value": {
-						"value": "@variables('listaClaves')",
+						"value": "@json(variables('listajson')).clave1",
 						"type": "Expression"
 					}
 				}
