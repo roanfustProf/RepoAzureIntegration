@@ -82,7 +82,7 @@
 						},
 						"ExecuteLoadConfiguration": {
 							"value": {
-								"value": "@pipeline().parameters.ParamExecuteLoadCode",
+								"value": "@pipeline().parameters.ParamExecuteLoadId",
 								"type": "Expression"
 							},
 							"type": "Int16"
