@@ -88,10 +88,12 @@
 		},
 		"variables": {
 			"listaClaves": {
-				"type": "Array"
+				"type": "Array",
+				"defaultValue": []
 			},
 			"listaValor": {
-				"type": "Array"
+				"type": "Array",
+				"defaultValue": []
 			}
 		},
 		"folder": {
