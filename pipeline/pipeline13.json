@@ -96,9 +96,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "lista",
+					"variableName": "var1",
 					"value": {
-						"value": "@variables('listaClaves')",
+						"value": "@variables('listaClaves')[0]",
 						"type": "Expression"
 					}
 				}
@@ -121,6 +121,9 @@
 			},
 			"lista": {
 				"type": "Array"
+			},
+			"var1": {
+				"type": "String"
 			}
 		},
 		"folder": {
