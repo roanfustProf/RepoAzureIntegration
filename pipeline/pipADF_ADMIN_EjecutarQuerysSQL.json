@@ -26,7 +26,7 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"ParamDataSourceCode": {
-							"value": "@variables('vardsrcDestination')",
+							"value": "@json(variables('varListParameters')).dsrcDestination",
 							"type": "Expression"
 						}
 					}
@@ -36,7 +36,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "@variables('varExecuteQuery')",
+								"value": "@json(variables('varListParameters')).ExecuteQuery",
 								"type": "Expression"
 							}
 						}
