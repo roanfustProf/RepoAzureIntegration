@@ -283,7 +283,7 @@
 							"typeProperties": {
 								"variableName": "varParameter",
 								"value": {
-									"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().clave,'\":\"',item().valor,'\"}'))))",
+									"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().Parameter,'\":\"',item().ParameterValue,'\"}'))))",
 									"type": "Expression"
 								}
 							}
