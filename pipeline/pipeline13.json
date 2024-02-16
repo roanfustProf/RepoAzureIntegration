@@ -116,8 +116,7 @@
 				"defaultValue": []
 			},
 			"lista": {
-				"type": "Array",
-				"defaultValue": []
+				"type": "Array"
 			}
 		},
 		"folder": {
