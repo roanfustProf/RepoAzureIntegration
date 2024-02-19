@@ -9,6 +9,10 @@
 			"CountryCodeADF": {
 				"type": "string",
 				"value": "PE"
+			},
+			"Environment": {
+				"type": "string",
+				"value": "DESA"
 			}
 		}
 	},
