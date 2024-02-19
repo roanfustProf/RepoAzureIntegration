@@ -68,22 +68,6 @@
 			}
 		],
 		"parameters": {
-			"ParamSchemaTableDestination": {
-				"type": "string",
-				"defaultValue": "dbo"
-			},
-			"ParamTableNameDestination": {
-				"type": "string",
-				"defaultValue": "tmpLista"
-			},
-			"ParamStoredNameSource": {
-				"type": "string",
-				"defaultValue": "USP_LEER_tmpLista2"
-			},
-			"ParamPrecopyScript": {
-				"type": "string",
-				"defaultValue": "Truncate table tmpLista"
-			},
 			"ParamExecuteLoadCode": {
 				"type": "string"
 			},
