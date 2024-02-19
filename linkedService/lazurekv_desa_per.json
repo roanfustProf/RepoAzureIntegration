@@ -10,7 +10,7 @@
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://kvdesaper.vault.azure.net/"
+			"baseUrl": "@{linkedService().ParamUrlKeyVault}"
 		}
 	}
 }
