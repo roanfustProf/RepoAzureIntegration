@@ -1,5 +1,5 @@
 {
-	"name": "pipADF_ADM_ExecuteLoadSecuence",
+	"name": "pipADF_ADM_ExecuteLoadParallel",
 	"properties": {
 		"activities": [
 			{
@@ -82,7 +82,7 @@
 						"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
 						"type": "Expression"
 					},
-					"isSequential": true,
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Execute Child Pipeline",
