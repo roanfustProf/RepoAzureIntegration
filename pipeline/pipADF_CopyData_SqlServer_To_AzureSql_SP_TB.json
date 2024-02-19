@@ -83,6 +83,21 @@
 			"ParamPrecopyScript": {
 				"type": "string",
 				"defaultValue": "Truncate table tmpLista"
+			},
+			"ParamExecuteLoadCode": {
+				"type": "string"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string"
+			},
+			"ParamEnvironment": {
+				"type": "string"
+			},
+			"ParamCountryCode": {
+				"type": "string"
+			},
+			"ParamdsrcIntegration": {
+				"type": "string"
 			}
 		},
 		"folder": {
