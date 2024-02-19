@@ -16,8 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "USP_LEER_tmpLista",
+						"type": "SqlServerSource",
+						"sqlReaderStoredProcedureName": "USP_LEER_tmpLista2",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -38,11 +38,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"tablename": "0"
-						}
+						"referenceName": "SqlServerTable1",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
