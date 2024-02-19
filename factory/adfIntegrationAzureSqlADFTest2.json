@@ -1,25 +1,9 @@
 {
 	"name": "adfIntegrationAzureSqlADFTest2",
-	"properties": {
-		"globalParameters": {
-			"EnvironmentADF": {
-				"type": "string",
-				"value": "DESA_PER2"
-			},
-			"CountryCodeADF": {
-				"type": "string",
-				"value": "PE"
-			},
-			"Environment": {
-				"type": "string",
-				"value": "DESA"
-			}
-		}
-	},
 	"location": "brazilsouth",
 	"identity": {
 		"type": "SystemAssigned",
-		"principalId": "e00fd6b5-5b6c-4db2-b11e-ed949daf9e21",
+		"principalId": "efe26689-d5a0-43d9-8453-295aa55af5a3",
 		"tenantId": "d305944c-1191-4f11-9dfa-46441ece1655"
 	}
 }
