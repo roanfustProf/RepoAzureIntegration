@@ -45,11 +45,31 @@
 				"outputs": [
 					{
 						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schematablename": {
+								"value": "@pipeline().parameters.schematablenamesource",
+								"type": "Expression"
+							},
+							"tablename": {
+								"value": "@pipeline().parameters.tablenamesource",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"schematablenamesource": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"tablenamesource": {
+				"type": "string",
+				"defaultValue": "tmpLista"
+			}
+		},
 		"folder": {
 			"name": "YanbalPipelines/YanbalODS_BusinessApp"
 		},
