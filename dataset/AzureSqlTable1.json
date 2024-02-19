@@ -10,10 +10,12 @@
 		},
 		"parameters": {
 			"schematablename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "0"
 			},
 			"tablename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "0"
 			}
 		},
 		"annotations": [],
