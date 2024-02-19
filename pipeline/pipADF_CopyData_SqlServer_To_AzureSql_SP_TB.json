@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderStoredProcedureName": {
-							"value": "@pipeline().parameters.param_stored_name_source",
+							"value": "@pipeline().parameters.ParamStoredNameSource",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -27,7 +27,7 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"preCopyScript": {
-							"value": "@pipeline().parameters.param_precopy_script",
+							"value": "@pipeline().parameters.ParamPrecopyScript",
 							"type": "Expression"
 						},
 						"writeBehavior": "insert",
@@ -55,11 +55,11 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"schematablename": {
-								"value": "@pipeline().parameters.param_schema_table_destination",
+								"value": "@pipeline().parameters.ParamSchemaTableDestination",
 								"type": "Expression"
 							},
 							"tablename": {
-								"value": "@pipeline().parameters.param_table_name_destination",
+								"value": "@pipeline().parameters.ParamTableNameDestination",
 								"type": "Expression"
 							}
 						}
@@ -68,19 +68,19 @@
 			}
 		],
 		"parameters": {
-			"param_schema_table_destination": {
+			"ParamSchemaTableDestination": {
 				"type": "string",
 				"defaultValue": "dbo"
 			},
-			"param_table_name_destination": {
+			"ParamTableNameDestination": {
 				"type": "string",
 				"defaultValue": "tmpLista"
 			},
-			"param_stored_name_source": {
+			"ParamStoredNameSource": {
 				"type": "string",
 				"defaultValue": "USP_LEER_tmpLista2"
 			},
-			"param_precopy_script": {
+			"ParamPrecopyScript": {
 				"type": "string",
 				"defaultValue": "Truncate table tmpLista"
 			}
