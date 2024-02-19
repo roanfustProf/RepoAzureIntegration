@@ -362,6 +362,15 @@
 				"type": "string"
 			}
 		},
+		"variables": {
+			"varListParameters": {
+				"type": "String",
+				"defaultValue": "{}"
+			},
+			"varParameter": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "YanbalPipelines/YanbalODS_BusinessApp"
 		},
