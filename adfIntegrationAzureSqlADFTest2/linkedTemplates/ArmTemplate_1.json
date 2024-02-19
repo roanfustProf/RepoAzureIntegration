@@ -13,6 +13,249 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline13')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "EXEC USP_LEERLISTA @{pipeline().parameters.ParamID}",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Script1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Script1').output.resultSets[0].rows",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set variable2",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "listajson2",
+										"value": {
+											"value": "@string(union(json(variables('listajson')),json(concat('{\"',item().clave,'\":\"',item().valor,'\"}'))))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set variable3",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set variable2",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "listajson",
+										"value": {
+											"value": "@variables('listajson2')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var1",
+							"value": {
+								"value": "@json(variables('listajson')).clave2",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamID": {
+						"type": "string",
+						"defaultValue": "1"
+					}
+				},
+				"variables": {
+					"listaClaves": {
+						"type": "Array",
+						"defaultValue": []
+					},
+					"listaValor": {
+						"type": "Array",
+						"defaultValue": []
+					},
+					"listajson": {
+						"type": "String",
+						"defaultValue": "{}"
+					},
+					"var1": {
+						"type": "String"
+					},
+					"indice1": {
+						"type": "Integer",
+						"defaultValue": 0
+					},
+					"listajson2": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Test"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[USP_INSERT_tmpselect12]",
+							"storedProcedureParameters": {
+								"ParamEnvironment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ParamExecuteLoadCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ParamExecuteLoadId": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamEnvironment": {
+						"type": "string",
+						"defaultValue": "0"
+					},
+					"ParamExecuteLoadCode": {
+						"type": "string",
+						"defaultValue": "0"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "Test"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1_copy2')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -702,7 +945,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline1_copy1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoadParent')]",

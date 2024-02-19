@@ -13,7 +13,7 @@
 		},
 		"lazurekv_desa_per_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://kvdesaper.vault.azure.net/"
+			"defaultValue": "@{linkedService().ParamUrlKeyVault}"
 		},
 		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
