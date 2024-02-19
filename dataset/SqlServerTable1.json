@@ -1,0 +1,15 @@
+{
+	"name": "SqlServerTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lsSqlServerDataBase",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ParamDataSourceCode": "desaperyanbalreportsods"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
