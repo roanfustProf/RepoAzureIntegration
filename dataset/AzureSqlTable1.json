@@ -3,7 +3,18 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "lsrcDestination",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ParamDataSourceCode": "desaperreportesgenerales"
+			}
+		},
+		"parameters": {
+			"schematablename": {
+				"type": "string"
+			},
+			"tablename": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
