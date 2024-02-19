@@ -1,0 +1,355 @@
+{
+	"name": "pipADF_ADM_EjecutarQuerysSQL_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Query SQL",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Generar lista parametros",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@json(variables('varListParameters')).dsrcDestination",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "@json(variables('varListParameters')).ExecuteQuery",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Start Process - Save Log",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[AdminPackage].[CaptureLogPackage]",
+					"storedProcedureParameters": {
+						"Comments": {
+							"value": {
+								"value": "@concat('Package Start Process','')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"CountryCode": {
+							"value": {
+								"value": "@pipeline().parameters.ParamCountryCode",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Enviroment": {
+							"value": {
+								"value": "@pipeline().parameters.ParamEnvironment",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"ExecuteLoadConfiguration": {
+							"value": {
+								"value": "@pipeline().parameters.ParamExecuteLoadId",
+								"type": "Expression"
+							},
+							"type": "Int16"
+						},
+						"LoadDateSSIS": {
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"LogEventType": {
+							"value": "1",
+							"type": "Int16"
+						},
+						"PackageName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TaskName": {
+							"value": {
+								"value": "@concat('Start Process - Save Log')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "End Process - Save Log",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Execute Query SQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[AdminPackage].[CaptureLogPackage]",
+					"storedProcedureParameters": {
+						"Comments": {
+							"value": {
+								"value": "@concat('Package End Proces','')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"CountryCode": {
+							"value": {
+								"value": "@pipeline().parameters.ParamCountryCode",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Enviroment": {
+							"value": {
+								"value": "@pipeline().parameters.ParamEnvironment",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"ExecuteLoadConfiguration": {
+							"value": {
+								"value": "@pipeline().parameters.ParamExecuteLoadId",
+								"type": "Expression"
+							},
+							"type": "Int16"
+						},
+						"LoadDateSSIS": {
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"LogEventType": {
+							"value": "1",
+							"type": "Int16"
+						},
+						"PackageName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TaskName": {
+							"value": {
+								"value": "@concat('End Process - Save Log')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": "desaperreportesgenerales"
+					}
+				}
+			},
+			{
+				"name": "GET Step configuration",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Start Process - Save Log",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "EXEC [AdminPackage].[ExecuteLoadConfigurationStepADF] @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Generar lista parametros",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GET Step configuration",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GET Step configuration').output.resultSets[0].rows",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "get parameter",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "varParameter",
+								"value": {
+									"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().Parameter,'\":\"',item().ParameterValue,'\"}'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Add parameter to json parameters",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "get parameter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "varListParameters",
+								"value": {
+									"value": "@variables('varParameter')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"ParamExecuteLoadCode": {
+				"type": "string",
+				"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string",
+				"defaultValue": "27201"
+			},
+			"ParamEnvironment": {
+				"type": "string",
+				"defaultValue": "DESA_PER"
+			},
+			"ParamCountryCode": {
+				"type": "string",
+				"defaultValue": "PE"
+			},
+			"ParamdsrcIntegration": {
+				"type": "string",
+				"defaultValue": "desaperreportesgenerales"
+			}
+		},
+		"variables": {
+			"varListParameters": {
+				"type": "String",
+				"defaultValue": "{}"
+			},
+			"varParameter": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "YanbalPipelines/YanbalODS_BusinessApp"
+		},
+		"annotations": []
+	}
+}
