@@ -16,11 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "POST",
-					"url": "https://management.azure.com/subscriptions/998fac29-2308-4c82-85bb-aef2aa738815/resourceGroups/rgTriggerPipelineADFfromAzureSql/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest/pipelines/pipeline1_copy1/createRun?api-version=2018-06-01",
-					"body": {
-						"ID_VALOR": "5",
-						"VALOR_VALOR": "Rony3"
-					},
+					"url": "https://management.azure.com/subscriptions/0784505e-eb7a-4875-99ce-e87a55053531/resourceGroups/rg_wirbi_rfuster/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest2/pipelines/pipcopycsvfile/createRun?api-version=2018-06-01",
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://management.azure.com"
