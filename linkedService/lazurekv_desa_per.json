@@ -4,7 +4,7 @@
 		"parameters": {
 			"ParamUrlKeyVault": {
 				"type": "string",
-				"defaultValue": "https://kvdesaper.vault.azure.net/"
+				"defaultValue": "https://kvdesaper3.vault.azure.net/"
 			}
 		},
 		"annotations": [],
