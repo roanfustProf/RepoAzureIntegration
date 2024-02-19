@@ -26,6 +26,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "@pipeline().parameters.param_precopy_script",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -75,6 +79,10 @@
 			"param_stored_name_source": {
 				"type": "string",
 				"defaultValue": "USP_LEER_tmpLista2"
+			},
+			"param_precopy_script": {
+				"type": "string",
+				"defaultValue": "Truncate table tmpLista"
 			}
 		},
 		"folder": {
