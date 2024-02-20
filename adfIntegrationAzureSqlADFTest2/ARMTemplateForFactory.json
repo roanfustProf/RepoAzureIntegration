@@ -3287,6 +3287,10 @@
 					"tablename": {
 						"type": "string",
 						"defaultValue": "0"
+					},
+					"ParamDataSourceCode": {
+						"type": "string",
+						"defaultValue": "0"
 					}
 				},
 				"annotations": [],
@@ -3638,6 +3642,12 @@
 						"ParamDataSourceCode": "desaperyanbalreportsods"
 					}
 				},
+				"parameters": {
+					"ParamDataSourceCode": {
+						"type": "string",
+						"defaultValue": "0"
+					}
+				},
 				"annotations": [],
 				"type": "SqlServerTable",
 				"schema": [],
@@ -3705,7 +3715,12 @@
 							{
 								"referenceName": "SqlServerTable1",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"ParamDataSourceCode": {
+										"value": "@json(variables('varListParameters')).dsrcSource",
+										"type": "Expression"
+									}
+								}
 							}
 						],
 						"outputs": [
@@ -3719,6 +3734,10 @@
 									},
 									"tablename": {
 										"value": "@json(variables('varListParameters')).tableNameDestination",
+										"type": "Expression"
+									},
+									"ParamDataSourceCode": {
+										"value": "@json(variables('varListParameters')).dsrcDestination",
 										"type": "Expression"
 									}
 								}
