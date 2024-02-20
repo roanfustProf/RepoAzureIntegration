@@ -16,6 +16,10 @@
 			"tablename": {
 				"type": "string",
 				"defaultValue": "0"
+			},
+			"ParamDataSourceCode": {
+				"type": "string",
+				"defaultValue": "0"
 			}
 		},
 		"annotations": [],

@@ -53,7 +53,13 @@
 				"inputs": [
 					{
 						"referenceName": "SqlServerTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"ParamDataSourceCode": {
+								"value": "@json(variables('varListParameters')).dsrcSource",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
