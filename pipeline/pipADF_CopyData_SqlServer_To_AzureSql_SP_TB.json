@@ -360,6 +360,21 @@
 			},
 			"ParamdsrcIntegration": {
 				"type": "string"
+			},
+			"ParamSubscription": {
+				"type": "string"
+			},
+			"ParamResourceGroup": {
+				"type": "string"
+			},
+			"ParamInstanceNameADF": {
+				"type": "string"
+			},
+			"ParamUrlExecutePipeline": {
+				"type": "string"
+			},
+			"ParamUrlStatusRunIdPipeline": {
+				"type": "string"
 			}
 		},
 		"variables": {
