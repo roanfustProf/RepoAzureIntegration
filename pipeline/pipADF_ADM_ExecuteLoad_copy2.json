@@ -3,41 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set RunId pipeline",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Ejecutar Pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "RunId",
-					"value": {
-						"value": "@string(activity('Ejecutar Pipeline').output.runId)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Finalizacion ejecucion pipeline",
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "Set RunId pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Set Url Status Pipeline",
+						"activity": "Ejecutar Pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -65,7 +35,7 @@
 							"typeProperties": {
 								"method": "GET",
 								"url": {
-									"value": "@variables('VarUrlStatusRunIdPipeline')",
+									"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
 									"type": "Expression"
 								},
 								"authentication": {
@@ -124,30 +94,6 @@
 						}
 					],
 					"timeout": "0.00:10:00"
-				}
-			},
-			{
-				"name": "Set Url Status Pipeline",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Ejecutar Pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "VarUrlStatusRunIdPipeline",
-					"value": {
-						"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
-						"type": "Expression"
-					}
 				}
 			},
 			{
