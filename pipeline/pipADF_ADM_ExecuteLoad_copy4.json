@@ -188,7 +188,7 @@
 			},
 			"ParamPipelineNameADF": {
 				"type": "string",
-				"defaultValue": "pipADF_CopyData_SqlServer_To_AzureSql_SP_TB"
+				"defaultValue": "pipADF_ADM_EjecutarQuerysSQL"
 			},
 			"ParamUrlExecutePipeline": {
 				"type": "string",
