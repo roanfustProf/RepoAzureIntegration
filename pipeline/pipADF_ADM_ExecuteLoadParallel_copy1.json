@@ -42,91 +42,6 @@
 				}
 			},
 			{
-				"name": "Childs Pipelines",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Load ExecuteLoadSequence",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
-						"type": "Expression"
-					},
-					"isSequential": false,
-					"batchCount": 10,
-					"activities": [
-						{
-							"name": "Execute Child Pipeline",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"policy": {
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pipADF_ADM_ExecuteLoad",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"ParamSubscription": {
-										"value": "@pipeline().parameters.ParamSubscription",
-										"type": "Expression"
-									},
-									"ParamResourceGroup": {
-										"value": "@pipeline().parameters.ParamResourceGroup",
-										"type": "Expression"
-									},
-									"ParamInstanceNameADF": {
-										"value": "@pipeline().parameters.ParamInstanceNameADF",
-										"type": "Expression"
-									},
-									"ParamPipelineNameADF": {
-										"value": "@item().SequencePipelineName",
-										"type": "Expression"
-									},
-									"ParamUrlExecutePipeline": {
-										"value": "@pipeline().parameters.ParamUrlExecutePipeline",
-										"type": "Expression"
-									},
-									"ParamUrlStatusRunIdPipeline": {
-										"value": "@pipeline().parameters.ParamUrlStatusRunIdPipeline",
-										"type": "Expression"
-									},
-									"ParamExecuteLoadCode": {
-										"value": "@item().SequenceExecuteLoadCode",
-										"type": "Expression"
-									},
-									"ParamExecuteLoadId": {
-										"value": "@item().SequenceExecuteLoadId",
-										"type": "Expression"
-									},
-									"ParamEnvironment": {
-										"value": "@pipeline().parameters.ParamEnvironment",
-										"type": "Expression"
-									},
-									"ParamCountryCode": {
-										"value": "@pipeline().parameters.ParamCountryCode",
-										"type": "Expression"
-									},
-									"ParamdsrcIntegration": {
-										"value": "@item().dsrcIntegration",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Start Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
@@ -212,7 +127,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Childs Pipelines",
+						"activity": "Execute child pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -290,6 +205,90 @@
 					"parameters": {
 						"ParamDataSourceCode": "desaperreportesgenerales"
 					}
+				}
+			},
+			{
+				"name": "Execute child pipeline",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Load ExecuteLoadSequence",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
+						"type": "Expression"
+					},
+					"batchCount": 10,
+					"activities": [
+						{
+							"name": "Execute Pipeline child",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pipADF_ADM_ExecuteLoad",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ParamSubscription": {
+										"value": "@pipeline().parameters.ParamSubscription",
+										"type": "Expression"
+									},
+									"ParamResourceGroup": {
+										"value": "@pipeline().parameters.ParamResourceGroup",
+										"type": "Expression"
+									},
+									"ParamInstanceNameADF": {
+										"value": "@pipeline().parameters.ParamInstanceNameADF",
+										"type": "Expression"
+									},
+									"ParamPipelineNameADF": {
+										"value": "@item().SequencePipelineName",
+										"type": "Expression"
+									},
+									"ParamUrlExecutePipeline": {
+										"value": "@pipeline().parameters.ParamUrlExecutePipeline",
+										"type": "Expression"
+									},
+									"ParamUrlStatusRunIdPipeline": {
+										"value": "@pipeline().parameters.ParamUrlStatusRunIdPipeline",
+										"type": "Expression"
+									},
+									"ParamExecuteLoadCode": {
+										"value": "@item().SequenceExecuteLoadCode",
+										"type": "Expression"
+									},
+									"ParamExecuteLoadId": {
+										"value": "@item().SequenceExecuteLoadId",
+										"type": "Expression"
+									},
+									"ParamEnvironment": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"ParamCountryCode": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"ParamdsrcIntegration": {
+										"value": "@item().dsrcIntegration",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
