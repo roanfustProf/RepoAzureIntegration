@@ -18,6 +18,10 @@
 		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "@linkedService().ParamDataSourceCode"
+		},
+		"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ParamDataSourceCode"
 		}
 	},
 	"variables": {
@@ -451,369 +455,21 @@
 					},
 					"ParamdsrcIntegration": {
 						"type": "string"
-					}
-				},
-				"variables": {
-					"varListParameters": {
-						"type": "String",
-						"defaultValue": "{}"
 					},
-					"varParameter": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "YanbalPipelines/YanbalODS_BusinessApp"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_EjecutarQuerysSQL_copy1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Execute Query SQL",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "Generar lista parametros",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "lsrcDestination",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"ParamDataSourceCode": {
-									"value": "@json(variables('varListParameters')).dsrcDestination",
-									"type": "Expression"
-								}
-							}
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": {
-										"value": "@json(variables('varListParameters')).ExecuteQuery",
-										"type": "Expression"
-									}
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
+					"ParamSubscription": {
+						"type": "string"
 					},
-					{
-						"name": "Start Process - Save Log",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
-							"storedProcedureParameters": {
-								"Comments": {
-									"value": {
-										"value": "@concat('Package Start Process','')",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"CountryCode": {
-									"value": {
-										"value": "@pipeline().parameters.ParamCountryCode",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"Enviroment": {
-									"value": {
-										"value": "@pipeline().parameters.ParamEnvironment",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"ExecuteLoadConfiguration": {
-									"value": {
-										"value": "@pipeline().parameters.ParamExecuteLoadId",
-										"type": "Expression"
-									},
-									"type": "Int16"
-								},
-								"LoadDateSSIS": {
-									"value": {
-										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"LogEventType": {
-									"value": "1",
-									"type": "Int16"
-								},
-								"PackageName": {
-									"value": {
-										"value": "@pipeline().Pipeline",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"TaskName": {
-									"value": {
-										"value": "@concat('Start Process - Save Log')",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "lsrcDestination",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"ParamDataSourceCode": {
-									"value": "@pipeline().parameters.ParamdsrcIntegration",
-									"type": "Expression"
-								}
-							}
-						}
+					"ParamResourceGroup": {
+						"type": "string"
 					},
-					{
-						"name": "End Process - Save Log",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Execute Query SQL",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
-							"storedProcedureParameters": {
-								"Comments": {
-									"value": {
-										"value": "@concat('Package End Proces','')",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"CountryCode": {
-									"value": {
-										"value": "@pipeline().parameters.ParamCountryCode",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"Enviroment": {
-									"value": {
-										"value": "@pipeline().parameters.ParamEnvironment",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"ExecuteLoadConfiguration": {
-									"value": {
-										"value": "@pipeline().parameters.ParamExecuteLoadId",
-										"type": "Expression"
-									},
-									"type": "Int16"
-								},
-								"LoadDateSSIS": {
-									"value": {
-										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"LogEventType": {
-									"value": "1",
-									"type": "Int16"
-								},
-								"PackageName": {
-									"value": {
-										"value": "@pipeline().Pipeline",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"TaskName": {
-									"value": {
-										"value": "@concat('End Process - Save Log')",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "lsrcDestination",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"ParamDataSourceCode": "desaperreportesgenerales"
-							}
-						}
+					"ParamInstanceNameADF": {
+						"type": "string"
 					},
-					{
-						"name": "GET Step configuration",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "Start Process - Save Log",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "lsrcDestination",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"ParamDataSourceCode": {
-									"value": "@pipeline().parameters.ParamdsrcIntegration",
-									"type": "Expression"
-								}
-							}
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": {
-										"value": "EXEC [AdminPackage].[ExecuteLoadConfigurationStepADF] @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
-										"type": "Expression"
-									}
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
+					"ParamUrlExecutePipeline": {
+						"type": "string"
 					},
-					{
-						"name": "Generar lista parametros",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "GET Step configuration",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('GET Step configuration').output.resultSets[0].rows",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "get parameter",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "varParameter",
-										"value": {
-											"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().Parameter,'\":\"',item().ParameterValue,'\"}'))))",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Add parameter to json parameters",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "get parameter",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "varListParameters",
-										"value": {
-											"value": "@variables('varParameter')",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"ParamExecuteLoadCode": {
-						"type": "string",
-						"defaultValue": "ODS_ProcesamientoDim_Sales_SalesParametersByTitle"
-					},
-					"ParamExecuteLoadId": {
-						"type": "string",
-						"defaultValue": "27201"
-					},
-					"ParamEnvironment": {
-						"type": "string",
-						"defaultValue": "DESA_PER"
-					},
-					"ParamCountryCode": {
-						"type": "string",
-						"defaultValue": "PE"
-					},
-					"ParamdsrcIntegration": {
-						"type": "string",
-						"defaultValue": "desaperreportesgenerales"
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string"
 					}
 				},
 				"variables": {
@@ -1035,7 +691,7 @@
 								"type": "Expression"
 							},
 							"body": {
-								"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\",\"ParamCountryCode\":\"',pipeline().parameters.ParamCountryCode, '\",\"ParamdsrcIntegration\": \"', pipeline().parameters.ParamdsrcIntegration, '\"}')",
+								"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\",\"ParamCountryCode\":\"',pipeline().parameters.ParamCountryCode, '\",\"ParamdsrcIntegration\": \"', pipeline().parameters.ParamdsrcIntegration,'\",\"ParamSubscription\": \"',pipeline().parameters.ParamSubscription,'\",\"ParamResourceGroup\":\"', pipeline().parameters.ParamResourceGroup,'\",\"ParamInstanceNameADF\":\"', pipeline().parameters.ParamInstanceNameADF,'\",\"ParamUrlExecutePipeline\":\"',pipeline().parameters.ParamUrlExecutePipeline, '\",\"ParamUrlStatusRunIdPipeline\": \"', pipeline().parameters.ParamUrlStatusRunIdPipeline, '\"}')\n",
 								"type": "Expression"
 							},
 							"authentication": {
@@ -1130,7 +786,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoadParent')]",
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoadSecuence')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1140,31 +796,7 @@
 						"type": "Script",
 						"dependsOn": [
 							{
-								"activity": "Set varSubscription",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set varResourceGroup",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set varUrlExecutePipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set varInstanceNameADF",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set varUrlStatusRunIdPipeline",
+								"activity": "Start Process - Save Log",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1215,7 +847,7 @@
 								"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
 								"type": "Expression"
 							},
-							"isSequential": false,
+							"isSequential": true,
 							"activities": [
 								{
 									"name": "Execute Child Pipeline",
@@ -1233,15 +865,15 @@
 										"waitOnCompletion": true,
 										"parameters": {
 											"ParamSubscription": {
-												"value": "@variables('varSubscription')",
+												"value": "@pipeline().parameters.ParamSubscription",
 												"type": "Expression"
 											},
 											"ParamResourceGroup": {
-												"value": "@variables('varResourceGroup')",
+												"value": "@pipeline().parameters.ParamResourceGroup",
 												"type": "Expression"
 											},
 											"ParamInstanceNameADF": {
-												"value": "@variables('varInstanceNameADF')",
+												"value": "@pipeline().parameters.ParamInstanceNameADF",
 												"type": "Expression"
 											},
 											"ParamPipelineNameADF": {
@@ -1249,11 +881,11 @@
 												"type": "Expression"
 											},
 											"ParamUrlExecutePipeline": {
-												"value": "@variables('varUrlExecutePipeline')",
+												"value": "@pipeline().parameters.ParamUrlExecutePipeline",
 												"type": "Expression"
 											},
 											"ParamUrlStatusRunIdPipeline": {
-												"value": "@variables('varUrlStatusRunIdPipeline')",
+												"value": "@pipeline().parameters.ParamUrlStatusRunIdPipeline",
 												"type": "Expression"
 											},
 											"ParamExecuteLoadCode": {
@@ -1283,128 +915,8 @@
 						}
 					},
 					{
-						"name": "Set varSubscription",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "GET ADF configuration",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "varSubscription",
-							"value": {
-								"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set varResourceGroup",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "GET ADF configuration",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "varResourceGroup",
-							"value": {
-								"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set varUrlExecutePipeline",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "GET ADF configuration",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "varUrlExecutePipeline",
-							"value": {
-								"value": "@string(activity('GET ADF configuration').output.firstRow.UrlExecutePipeline)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set varInstanceNameADF",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "GET ADF configuration",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "varInstanceNameADF",
-							"value": {
-								"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set varUrlStatusRunIdPipeline",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "GET ADF configuration",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "varUrlStatusRunIdPipeline",
-							"value": {
-								"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "GET ADF configuration",
-						"type": "Lookup",
+						"name": "Start Process - Save Log",
+						"type": "SqlServerStoredProcedure",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1415,25 +927,156 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[AdminPackage].[GetConfigurationADFInstance]",
-								"storedProcedureParameters": {
-									"CountryCode": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().globalParameters.CountryCodeADF",
-											"type": "Expression"
-										}
-									}
+							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
+							"storedProcedureParameters": {
+								"Comments": {
+									"value": {
+										"value": "@concat('Package Start Process','')",
+										"type": "Expression"
+									},
+									"type": "String"
 								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
+								"CountryCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Enviroment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExecuteLoadConfiguration": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int16"
+								},
+								"LoadDateSSIS": {
+									"value": {
+										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"LogEventType": {
+									"value": "1",
+									"type": "Int16"
+								},
+								"PackageName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskName": {
+									"value": {
+										"value": "@concat('Start Process - Save Log')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": {
+									"value": "@pipeline().parameters.ParamdsrcIntegration",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "End Process - Save Log",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Childs Pipelines",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
+							"storedProcedureParameters": {
+								"Comments": {
+									"value": {
+										"value": "@concat('Package End Proces','')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"CountryCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Enviroment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExecuteLoadConfiguration": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int16"
+								},
+								"LoadDateSSIS": {
+									"value": {
+										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"LogEventType": {
+									"value": "1",
+									"type": "Int16"
+								},
+								"PackageName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskName": {
+									"value": {
+										"value": "@concat('End Process - Save Log')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
 							}
 						}
 					}
@@ -1443,16 +1086,34 @@
 				},
 				"parameters": {
 					"ParamExecuteLoadCode": {
-						"type": "string",
-						"defaultValue": "ODS_BusinessApp"
+						"type": "string"
 					},
 					"ParamEnvironment": {
-						"type": "string",
-						"defaultValue": "DESA_PER"
+						"type": "string"
 					},
 					"ParamCountryCode": {
-						"type": "string",
-						"defaultValue": "PE"
+						"type": "string"
+					},
+					"ParamSubscription": {
+						"type": "string"
+					},
+					"ParamResourceGroup": {
+						"type": "string"
+					},
+					"ParamInstanceNameADF": {
+						"type": "string"
+					},
+					"ParamUrlExecutePipeline": {
+						"type": "string"
+					},
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string"
+					},
+					"ParamdsrcIntegration": {
+						"type": "string"
 					}
 				},
 				"variables": {
@@ -1484,7 +1145,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/pipADF_ADM_ExecuteLoad')]"
 			]
 		},
@@ -3614,12 +3274,34 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "lsrcDestination",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": "desaperreportesgenerales"
+					}
+				},
+				"parameters": {
+					"schematablename": {
+						"type": "string",
+						"defaultValue": "0"
+					},
+					"tablename": {
+						"type": "string",
+						"defaultValue": "0"
+					}
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [],
-				"typeProperties": {}
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schematablename",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tablename",
+						"type": "Expression"
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
@@ -3733,6 +3415,1722 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/lazurekv_desa_per')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline15')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "USP_LEER_tmpLista",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {
+									"schematablename": {
+										"value": "@pipeline().parameters.schematablenamesource",
+										"type": "Expression"
+									},
+									"tablename": {
+										"value": "@pipeline().parameters.tablenamesource",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"schematablenamesource": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"tablenamesource": {
+						"type": "string",
+						"defaultValue": "tmpLista"
+					}
+				},
+				"folder": {
+					"name": "Test"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lsSqlServerDataBase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ParamDataSourceCode": {
+						"type": "string",
+						"defaultValue": "desaperyanbalreportsods"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "lazurekv_desa_per",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamUrlKeyVault": "https://kvdesaper3.vault.azure.net/"
+							}
+						},
+						"secretName": {
+							"value": "[parameters('lsSqlServerDataBase_properties_typeProperties_connectionString_secretName')]",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lazurekv_desa_per')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline15_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderStoredProcedureName": "USP_LEER_tmpLista2",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {
+									"schematablename": {
+										"value": "@pipeline().parameters.schematablenamesource",
+										"type": "Expression"
+									},
+									"tablename": {
+										"value": "@pipeline().parameters.tablenamesource",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"schematablenamesource": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"tablenamesource": {
+						"type": "string",
+						"defaultValue": "tmpLista"
+					}
+				},
+				"folder": {
+					"name": "Test"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lsSqlServerDataBase",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": "desaperyanbalreportsods"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lsSqlServerDataBase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_CopyData_SqlServer_To_AzureSql_SP_TB')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Generar lista parametros",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderStoredProcedureName": {
+									"value": "@json(variables('varListParameters')).storedNameSource",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": {
+									"value": "@json(variables('varListParameters')).precopyScript",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {
+									"schematablename": {
+										"value": "@json(variables('varListParameters')).schemaTableDestination",
+										"type": "Expression"
+									},
+									"tablename": {
+										"value": "@json(variables('varListParameters')).tableNameDestination",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Start Process - Save Log",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
+							"storedProcedureParameters": {
+								"Comments": {
+									"value": {
+										"value": "@concat('Package Start Process','')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"CountryCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Enviroment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExecuteLoadConfiguration": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int16"
+								},
+								"LoadDateSSIS": {
+									"value": {
+										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"LogEventType": {
+									"value": "1",
+									"type": "Int16"
+								},
+								"PackageName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskName": {
+									"value": {
+										"value": "@concat('Start Process - Save Log')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": {
+									"value": "@pipeline().parameters.ParamdsrcIntegration",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "GET Step configuration",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Start Process - Save Log",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": {
+									"value": "@pipeline().parameters.ParamdsrcIntegration",
+									"type": "Expression"
+								}
+							}
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "EXEC [AdminPackage].[ExecuteLoadConfigurationStepADF] @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Generar lista parametros",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GET Step configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GET Step configuration').output.resultSets[0].rows",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "get parameter",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "varParameter",
+										"value": {
+											"value": "@string(union(json(variables('varListParameters')),json(concat('{\"',item().Parameter,'\":\"',item().ParameterValue,'\"}'))))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Add parameter to json parameters",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "get parameter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "varListParameters",
+										"value": {
+											"value": "@variables('varParameter')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "End Process - Save Log",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
+							"storedProcedureParameters": {
+								"Comments": {
+									"value": {
+										"value": "@concat('Package End Proces','')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"CountryCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Enviroment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExecuteLoadConfiguration": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int16"
+								},
+								"LoadDateSSIS": {
+									"value": {
+										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"LogEventType": {
+									"value": "1",
+									"type": "Int16"
+								},
+								"PackageName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskName": {
+									"value": {
+										"value": "@concat('End Process - Save Log')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamExecuteLoadCode": {
+						"type": "string"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string"
+					},
+					"ParamEnvironment": {
+						"type": "string"
+					},
+					"ParamCountryCode": {
+						"type": "string"
+					},
+					"ParamdsrcIntegration": {
+						"type": "string"
+					},
+					"ParamSubscription": {
+						"type": "string"
+					},
+					"ParamResourceGroup": {
+						"type": "string"
+					},
+					"ParamInstanceNameADF": {
+						"type": "string"
+					},
+					"ParamUrlExecutePipeline": {
+						"type": "string"
+					},
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"varListParameters": {
+						"type": "String",
+						"defaultValue": "{}"
+					},
+					"varParameter": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecutePipelineParent')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load ExecuteLoadSequence",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Set varSubscription",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varResourceGroup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varUrlExecutePipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varInstanceNameADF",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varUrlStatusRunIdPipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Childs Pipelines",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Load ExecuteLoadSequence",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute Child Pipeline",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pipADF_ADM_ExecuteLoad",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"ParamSubscription": {
+												"value": "@variables('varSubscription')",
+												"type": "Expression"
+											},
+											"ParamResourceGroup": {
+												"value": "@variables('varResourceGroup')",
+												"type": "Expression"
+											},
+											"ParamInstanceNameADF": {
+												"value": "@variables('varInstanceNameADF')",
+												"type": "Expression"
+											},
+											"ParamPipelineNameADF": {
+												"value": "@item().SequencePipelineName",
+												"type": "Expression"
+											},
+											"ParamUrlExecutePipeline": {
+												"value": "@variables('varUrlExecutePipeline')",
+												"type": "Expression"
+											},
+											"ParamUrlStatusRunIdPipeline": {
+												"value": "@variables('varUrlStatusRunIdPipeline')",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadCode": {
+												"value": "@item().SequenceExecuteLoadCode",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadId": {
+												"value": "@item().SequenceExecuteLoadId",
+												"type": "Expression"
+											},
+											"ParamEnvironment": {
+												"value": "@pipeline().parameters.ParamEnvironment",
+												"type": "Expression"
+											},
+											"ParamCountryCode": {
+												"value": "@pipeline().parameters.ParamCountryCode",
+												"type": "Expression"
+											},
+											"ParamdsrcIntegration": {
+												"value": "@item().dsrcIntegration",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set varSubscription",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varSubscription",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varResourceGroup",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varResourceGroup",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varUrlExecutePipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varUrlExecutePipeline",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.UrlExecutePipeline)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varInstanceNameADF",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varInstanceNameADF",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varUrlStatusRunIdPipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varUrlStatusRunIdPipeline",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "GET ADF configuration",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[AdminPackage].[GetConfigurationADFInstance]",
+								"storedProcedureParameters": {
+									"CountryCode": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().globalParameters.CountryCodeADF",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamExecuteLoadCode": {
+						"type": "string",
+						"defaultValue": "ODS_BusinessApp"
+					},
+					"ParamEnvironment": {
+						"type": "string",
+						"defaultValue": "DESA_PER"
+					},
+					"ParamCountryCode": {
+						"type": "string",
+						"defaultValue": "PE"
+					}
+				},
+				"variables": {
+					"varSubscription": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varResourceGroup": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varInstanceNameADF": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varUrlExecutePipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varUrlStatusRunIdPipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/pipelines/pipADF_ADM_ExecuteLoad')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecutePipelineParent_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load ExecuteLoadSequence",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Set varSubscription",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varResourceGroup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varUrlExecutePipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varInstanceNameADF",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set varUrlStatusRunIdPipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Childs Pipelines",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Load ExecuteLoadSequence",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute Child Pipeline",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pipADF_ADM_ExecuteLoad",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"ParamSubscription": {
+												"value": "@variables('varSubscription')",
+												"type": "Expression"
+											},
+											"ParamResourceGroup": {
+												"value": "@variables('varResourceGroup')",
+												"type": "Expression"
+											},
+											"ParamInstanceNameADF": {
+												"value": "@variables('varInstanceNameADF')",
+												"type": "Expression"
+											},
+											"ParamPipelineNameADF": {
+												"value": "@item().SequencePipelineName",
+												"type": "Expression"
+											},
+											"ParamUrlExecutePipeline": {
+												"value": "@variables('varUrlExecutePipeline')",
+												"type": "Expression"
+											},
+											"ParamUrlStatusRunIdPipeline": {
+												"value": "@variables('varUrlStatusRunIdPipeline')",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadCode": {
+												"value": "@item().SequenceExecuteLoadCode",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadId": {
+												"value": "@item().SequenceExecuteLoadId",
+												"type": "Expression"
+											},
+											"ParamEnvironment": {
+												"value": "@pipeline().parameters.ParamEnvironment",
+												"type": "Expression"
+											},
+											"ParamCountryCode": {
+												"value": "@pipeline().parameters.ParamCountryCode",
+												"type": "Expression"
+											},
+											"ParamdsrcIntegration": {
+												"value": "@item().dsrcIntegration",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set varSubscription",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varSubscription",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varResourceGroup",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varResourceGroup",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varUrlExecutePipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varUrlExecutePipeline",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.UrlExecutePipeline)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varInstanceNameADF",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varInstanceNameADF",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set varUrlStatusRunIdPipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GET ADF configuration",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "varUrlStatusRunIdPipeline",
+							"value": {
+								"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "GET ADF configuration",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[AdminPackage].[GetConfigurationADFInstance]",
+								"storedProcedureParameters": {
+									"CountryCode": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().globalParameters.CountryCodeADF",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamExecuteLoadCode": {
+						"type": "string",
+						"defaultValue": "ODS_BusinessApp"
+					},
+					"ParamEnvironment": {
+						"type": "string",
+						"defaultValue": "DESA_PER"
+					},
+					"ParamCountryCode": {
+						"type": "string",
+						"defaultValue": "PE"
+					}
+				},
+				"variables": {
+					"varSubscription": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varResourceGroup": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varInstanceNameADF": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varUrlExecutePipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varUrlStatusRunIdPipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "Test"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/pipelines/pipADF_ADM_ExecuteLoad')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoadParallel')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load ExecuteLoadSequence",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Start Process - Save Log",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "EXEC AdminPackage.ExecuteLoadSequenceADF @{pipeline().parameters.ParamExecuteLoadCode} , @{pipeline().parameters.ParamEnvironment}",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Childs Pipelines",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Load ExecuteLoadSequence",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Execute Child Pipeline",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pipADF_ADM_ExecuteLoad",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"ParamSubscription": {
+												"value": "@pipeline().parameters.ParamSubscription",
+												"type": "Expression"
+											},
+											"ParamResourceGroup": {
+												"value": "@pipeline().parameters.ParamResourceGroup",
+												"type": "Expression"
+											},
+											"ParamInstanceNameADF": {
+												"value": "@pipeline().parameters.ParamInstanceNameADF",
+												"type": "Expression"
+											},
+											"ParamPipelineNameADF": {
+												"value": "@item().SequencePipelineName",
+												"type": "Expression"
+											},
+											"ParamUrlExecutePipeline": {
+												"value": "@pipeline().parameters.ParamUrlExecutePipeline",
+												"type": "Expression"
+											},
+											"ParamUrlStatusRunIdPipeline": {
+												"value": "@pipeline().parameters.ParamUrlStatusRunIdPipeline",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadCode": {
+												"value": "@item().SequenceExecuteLoadCode",
+												"type": "Expression"
+											},
+											"ParamExecuteLoadId": {
+												"value": "@item().SequenceExecuteLoadId",
+												"type": "Expression"
+											},
+											"ParamEnvironment": {
+												"value": "@pipeline().parameters.ParamEnvironment",
+												"type": "Expression"
+											},
+											"ParamCountryCode": {
+												"value": "@pipeline().parameters.ParamCountryCode",
+												"type": "Expression"
+											},
+											"ParamdsrcIntegration": {
+												"value": "@item().dsrcIntegration",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Start Process - Save Log",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
+							"storedProcedureParameters": {
+								"Comments": {
+									"value": {
+										"value": "@concat('Package Start Process','')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"CountryCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Enviroment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExecuteLoadConfiguration": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int16"
+								},
+								"LoadDateSSIS": {
+									"value": {
+										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"LogEventType": {
+									"value": "1",
+									"type": "Int16"
+								},
+								"PackageName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskName": {
+									"value": {
+										"value": "@concat('Start Process - Save Log')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": {
+									"value": "@pipeline().parameters.ParamdsrcIntegration",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "End Process - Save Log",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Childs Pipelines",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[AdminPackage].[CaptureLogPackage]",
+							"storedProcedureParameters": {
+								"Comments": {
+									"value": {
+										"value": "@concat('Package End Proces','')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"CountryCode": {
+									"value": {
+										"value": "@pipeline().parameters.ParamCountryCode",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Enviroment": {
+									"value": {
+										"value": "@pipeline().parameters.ParamEnvironment",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExecuteLoadConfiguration": {
+									"value": {
+										"value": "@pipeline().parameters.ParamExecuteLoadId",
+										"type": "Expression"
+									},
+									"type": "Int16"
+								},
+								"LoadDateSSIS": {
+									"value": {
+										"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"LogEventType": {
+									"value": "1",
+									"type": "Int16"
+								},
+								"PackageName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskName": {
+									"value": {
+										"value": "@concat('End Process - Save Log')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "lsrcDestination",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"ParamDataSourceCode": "desaperreportesgenerales"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamExecuteLoadCode": {
+						"type": "string"
+					},
+					"ParamEnvironment": {
+						"type": "string"
+					},
+					"ParamCountryCode": {
+						"type": "string"
+					},
+					"ParamSubscription": {
+						"type": "string"
+					},
+					"ParamResourceGroup": {
+						"type": "string"
+					},
+					"ParamInstanceNameADF": {
+						"type": "string"
+					},
+					"ParamUrlExecutePipeline": {
+						"type": "string"
+					},
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string"
+					},
+					"ParamdsrcIntegration": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"varSubscription": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varResourceGroup": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varInstanceNameADF": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varUrlExecutePipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"varUrlStatusRunIdPipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]",
+				"[concat(variables('factoryId'), '/pipelines/pipADF_ADM_ExecuteLoad')]"
 			]
 		}
 	]

@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "@linkedService().ParamDataSourceCode"
 		},
+		"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ParamDataSourceCode"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -54,6 +58,9 @@
 					},
 					"lsrcDestination_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('lsrcDestination_properties_typeProperties_connectionString_secretName')]"
+					},
+					"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('lsSqlServerDataBase_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

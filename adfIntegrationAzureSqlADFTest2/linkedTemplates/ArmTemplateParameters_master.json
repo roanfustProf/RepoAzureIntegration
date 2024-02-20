@@ -14,6 +14,9 @@
 		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
 			"value": "@linkedService().ParamDataSourceCode"
 		},
+		"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
+			"value": "@linkedService().ParamDataSourceCode"
+		},
 		"containerUri": {
 			"value": ""
 		},
