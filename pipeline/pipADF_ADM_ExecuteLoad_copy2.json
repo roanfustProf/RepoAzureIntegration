@@ -224,37 +224,48 @@
 		],
 		"parameters": {
 			"ParamSubscription": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "0784505e-eb7a-4875-99ce-e87a55053531"
 			},
 			"ParamResourceGroup": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "rg_wirbi_rfuster"
 			},
 			"ParamInstanceNameADF": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "adfIntegrationAzureSqlADFTest2"
 			},
 			"ParamPipelineNameADF": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "pipADF_CopyData_SqlServer_To_AzureSql_SP_TB"
 			},
 			"ParamUrlExecutePipeline": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelines/@pipelinename/createRun?api-version=2018-06-01"
 			},
 			"ParamUrlStatusRunIdPipeline": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelineruns/@runidpipeline?api-version=2018-06-01"
 			},
 			"ParamExecuteLoadCode": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "ODS_Copia_Temporary_Core_PeriodWeekly"
 			},
 			"ParamExecuteLoadId": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "20147"
 			},
 			"ParamEnvironment": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DESA_PER"
 			},
 			"ParamCountryCode": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "PE"
 			},
 			"ParamdsrcIntegration": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "desaperreportesgenerales"
 			}
 		},
 		"variables": {
