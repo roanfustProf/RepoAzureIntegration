@@ -75,39 +75,9 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Set RunId pipeline",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Ejecutar Pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunId",
-							"value": {
-								"value": "@string(activity('Ejecutar Pipeline').output.runId)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
 						"name": "Finalizacion ejecucion pipeline",
 						"type": "Until",
 						"dependsOn": [
-							{
-								"activity": "Set RunId pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
 							{
 								"activity": "Set Url Status Pipeline",
 								"dependencyConditions": [
@@ -191,25 +161,6 @@
 										"variableName": "ExecutePipelineFinished",
 										"value": {
 											"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Wait1",
-									"type": "Wait",
-									"dependsOn": [
-										{
-											"activity": "Set pipeline finished",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": {
-											"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),1,1)",
 											"type": "Expression"
 										}
 									}
@@ -951,6 +902,815 @@
 				"typeProperties": {
 					"connectionString": "[parameters('lsazureblobstorage_connectionString')]"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoad_copy4')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Finalizacion ejecucion pipeline",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Set Url Status Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@bool(variables('ExecutePipelineFinished'))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Obtener estado de ejecucion pipeline",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"method": "GET",
+										"headers": {},
+										"url": {
+											"value": "@variables('VarUrlStatusRunIdPipeline')",
+											"type": "Expression"
+										},
+										"authentication": {
+											"type": "MSI",
+											"resource": "https://management.azure.com"
+										}
+									}
+								},
+								{
+									"name": "Set RunStatus Pipeline",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Obtener estado de ejecucion pipeline",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RunStatus",
+										"value": {
+											"value": "@string(activity('Obtener estado de ejecucion pipeline').output.status)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set pipeline finished",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set RunStatus Pipeline",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ExecutePipelineFinished",
+										"value": {
+											"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "0.00:10:00"
+						}
+					},
+					{
+						"name": "Set Url Status Pipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Ejecutar Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "VarUrlStatusRunIdPipeline",
+							"value": {
+								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Ejecutar Pipeline",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set Url Execute Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": {
+								"value": "@variables('VarUrlExecutePipeline')",
+								"type": "Expression"
+							},
+							"body": {
+								"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\",\"ParamCountryCode\":\"',pipeline().parameters.ParamCountryCode, '\",\"ParamdsrcIntegration\": \"', pipeline().parameters.ParamdsrcIntegration,'\",\"ParamSubscription\": \"',pipeline().parameters.ParamSubscription,'\",\"ParamResourceGroup\":\"', pipeline().parameters.ParamResourceGroup,'\",\"ParamInstanceNameADF\":\"', pipeline().parameters.ParamInstanceNameADF,'\",\"ParamUrlExecutePipeline\":\"',pipeline().parameters.ParamUrlExecutePipeline, '\",\"ParamUrlStatusRunIdPipeline\": \"', pipeline().parameters.ParamUrlStatusRunIdPipeline, '\"}')\n",
+								"type": "Expression"
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://management.azure.com"
+							}
+						}
+					},
+					{
+						"name": "Set Url Execute Pipeline",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "VarUrlExecutePipeline",
+							"value": {
+								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@pipelinename',pipeline().parameters.ParamPipelineNameADF),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamSubscription": {
+						"type": "string",
+						"defaultValue": "0784505e-eb7a-4875-99ce-e87a55053531"
+					},
+					"ParamResourceGroup": {
+						"type": "string",
+						"defaultValue": "rg_wirbi_rfuster"
+					},
+					"ParamInstanceNameADF": {
+						"type": "string",
+						"defaultValue": "adfIntegrationAzureSqlADFTest2"
+					},
+					"ParamPipelineNameADF": {
+						"type": "string",
+						"defaultValue": "pipADF_ADM_EjecutarQuerysSQL"
+					},
+					"ParamUrlExecutePipeline": {
+						"type": "string",
+						"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelines/@pipelinename/createRun?api-version=2018-06-01"
+					},
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string",
+						"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelineruns/@runidpipeline?api-version=2018-06-01"
+					},
+					"ParamExecuteLoadCode": {
+						"type": "string",
+						"defaultValue": "ODS_CopiaLocal_Temporary_Core_PeriodWeekly"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string",
+						"defaultValue": "20148"
+					},
+					"ParamEnvironment": {
+						"type": "string",
+						"defaultValue": "DESA_PER"
+					},
+					"ParamCountryCode": {
+						"type": "string",
+						"defaultValue": "PE"
+					},
+					"ParamdsrcIntegration": {
+						"type": "string",
+						"defaultValue": "desaperreportesgenerales"
+					}
+				},
+				"variables": {
+					"RunId": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"ExecutePipelineFinished": {
+						"type": "String",
+						"defaultValue": "false"
+					},
+					"RunStatus": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"VarUrlStatusRunIdPipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"VarUrlExecutePipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoad_copy5')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Finalizacion ejecucion pipeline",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Set Url Status Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@bool(variables('ExecutePipelineFinished'))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Obtener estado de ejecucion pipeline",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"method": "GET",
+										"headers": {},
+										"url": {
+											"value": "@variables('VarUrlStatusRunIdPipeline')",
+											"type": "Expression"
+										},
+										"authentication": {
+											"type": "MSI",
+											"resource": "https://management.azure.com"
+										}
+									}
+								},
+								{
+									"name": "Set RunStatus Pipeline",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Obtener estado de ejecucion pipeline",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RunStatus",
+										"value": {
+											"value": "@string(activity('Obtener estado de ejecucion pipeline').output.status)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set pipeline finished",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set RunStatus Pipeline",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ExecutePipelineFinished",
+										"value": {
+											"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "0.00:10:00"
+						}
+					},
+					{
+						"name": "Set Url Status Pipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Ejecutar Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "VarUrlStatusRunIdPipeline",
+							"value": {
+								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Ejecutar Pipeline",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set Url Execute Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": {
+								"value": "@variables('VarUrlExecutePipeline')",
+								"type": "Expression"
+							},
+							"body": {
+								"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\",\"ParamCountryCode\":\"',pipeline().parameters.ParamCountryCode, '\",\"ParamdsrcIntegration\": \"', pipeline().parameters.ParamdsrcIntegration,'\",\"ParamSubscription\": \"',pipeline().parameters.ParamSubscription,'\",\"ParamResourceGroup\":\"', pipeline().parameters.ParamResourceGroup,'\",\"ParamInstanceNameADF\":\"', pipeline().parameters.ParamInstanceNameADF,'\",\"ParamUrlExecutePipeline\":\"',pipeline().parameters.ParamUrlExecutePipeline, '\",\"ParamUrlStatusRunIdPipeline\": \"', pipeline().parameters.ParamUrlStatusRunIdPipeline, '\"}')\n",
+								"type": "Expression"
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://management.azure.com"
+							}
+						}
+					},
+					{
+						"name": "Set Url Execute Pipeline",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "VarUrlExecutePipeline",
+							"value": {
+								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@pipelinename',pipeline().parameters.ParamPipelineNameADF),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamSubscription": {
+						"type": "string",
+						"defaultValue": "0784505e-eb7a-4875-99ce-e87a55053531"
+					},
+					"ParamResourceGroup": {
+						"type": "string",
+						"defaultValue": "rg_wirbi_rfuster"
+					},
+					"ParamInstanceNameADF": {
+						"type": "string",
+						"defaultValue": "adfIntegrationAzureSqlADFTest2"
+					},
+					"ParamPipelineNameADF": {
+						"type": "string",
+						"defaultValue": "pipADF_CopyData_SqlServer_To_AzureSql_SP_TB"
+					},
+					"ParamUrlExecutePipeline": {
+						"type": "string",
+						"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelines/@pipelinename/createRun?api-version=2018-06-01"
+					},
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string",
+						"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelineruns/@runidpipeline?api-version=2018-06-01"
+					},
+					"ParamExecuteLoadCode": {
+						"type": "string",
+						"defaultValue": "ODS_Copia_Temporary_Core_PeriodWeekly"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string",
+						"defaultValue": "20147"
+					},
+					"ParamEnvironment": {
+						"type": "string",
+						"defaultValue": "DESA_PER"
+					},
+					"ParamCountryCode": {
+						"type": "string",
+						"defaultValue": "PE"
+					},
+					"ParamdsrcIntegration": {
+						"type": "string",
+						"defaultValue": "desaperreportesgenerales"
+					}
+				},
+				"variables": {
+					"RunId": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"ExecutePipelineFinished": {
+						"type": "String",
+						"defaultValue": "false"
+					},
+					"RunStatus": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"VarUrlStatusRunIdPipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"VarUrlExecutePipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoad_V1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set RunId pipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Ejecutar Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RunId",
+							"value": {
+								"value": "@string(activity('Ejecutar Pipeline').output.runId)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Finalizacion ejecucion pipeline",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Set RunId pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set Url Status Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@bool(variables('ExecutePipelineFinished'))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Obtener estado de ejecucion pipeline",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"method": "GET",
+										"headers": {},
+										"url": {
+											"value": "@variables('VarUrlStatusRunIdPipeline')",
+											"type": "Expression"
+										},
+										"authentication": {
+											"type": "MSI",
+											"resource": "https://management.azure.com"
+										}
+									}
+								},
+								{
+									"name": "Set RunStatus Pipeline",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Obtener estado de ejecucion pipeline",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "RunStatus",
+										"value": {
+											"value": "@string(activity('Obtener estado de ejecucion pipeline').output.status)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set pipeline finished",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set RunStatus Pipeline",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ExecutePipelineFinished",
+										"value": {
+											"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Wait1",
+									"type": "Wait",
+									"dependsOn": [
+										{
+											"activity": "Set pipeline finished",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": {
+											"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),1,1)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "0.00:10:00"
+						}
+					},
+					{
+						"name": "Set Url Status Pipeline",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Ejecutar Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "VarUrlStatusRunIdPipeline",
+							"value": {
+								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Ejecutar Pipeline",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Set Url Execute Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": {
+								"value": "@variables('VarUrlExecutePipeline')",
+								"type": "Expression"
+							},
+							"body": {
+								"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\",\"ParamCountryCode\":\"',pipeline().parameters.ParamCountryCode, '\",\"ParamdsrcIntegration\": \"', pipeline().parameters.ParamdsrcIntegration,'\",\"ParamSubscription\": \"',pipeline().parameters.ParamSubscription,'\",\"ParamResourceGroup\":\"', pipeline().parameters.ParamResourceGroup,'\",\"ParamInstanceNameADF\":\"', pipeline().parameters.ParamInstanceNameADF,'\",\"ParamUrlExecutePipeline\":\"',pipeline().parameters.ParamUrlExecutePipeline, '\",\"ParamUrlStatusRunIdPipeline\": \"', pipeline().parameters.ParamUrlStatusRunIdPipeline, '\"}')\n",
+								"type": "Expression"
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://management.azure.com"
+							}
+						}
+					},
+					{
+						"name": "Set Url Execute Pipeline",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "VarUrlExecutePipeline",
+							"value": {
+								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@pipelinename',pipeline().parameters.ParamPipelineNameADF),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"ParamSubscription": {
+						"type": "string"
+					},
+					"ParamResourceGroup": {
+						"type": "string"
+					},
+					"ParamInstanceNameADF": {
+						"type": "string"
+					},
+					"ParamPipelineNameADF": {
+						"type": "string"
+					},
+					"ParamUrlExecutePipeline": {
+						"type": "string"
+					},
+					"ParamUrlStatusRunIdPipeline": {
+						"type": "string"
+					},
+					"ParamExecuteLoadCode": {
+						"type": "string"
+					},
+					"ParamExecuteLoadId": {
+						"type": "string"
+					},
+					"ParamEnvironment": {
+						"type": "string"
+					},
+					"ParamCountryCode": {
+						"type": "string"
+					},
+					"ParamdsrcIntegration": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"RunId": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"ExecutePipelineFinished": {
+						"type": "String",
+						"defaultValue": "false"
+					},
+					"RunStatus": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"VarUrlStatusRunIdPipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"VarUrlExecutePipeline": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"folder": {
+					"name": "YanbalPipelines/YanbalODS_BusinessApp"
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -1929,481 +2689,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipADF_ADM_ExecuteLoad_copy1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set RunId pipeline",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Ejecutar Pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunId",
-							"value": {
-								"value": "@string(activity('Ejecutar Pipeline').output.runId)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Finalizacion ejecucion pipeline",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "Set RunId pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set Url Status Pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@bool(variables('ExecutePipelineFinished'))",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Obtener estado de ejecucion pipeline",
-									"type": "WebActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"method": "GET",
-										"headers": {},
-										"url": {
-											"value": "@variables('VarUrlStatusRunIdPipeline')",
-											"type": "Expression"
-										},
-										"authentication": {
-											"type": "MSI",
-											"resource": "https://management.azure.com"
-										}
-									}
-								},
-								{
-									"name": "Set RunStatus Pipeline",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Obtener estado de ejecucion pipeline",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "RunStatus",
-										"value": {
-											"value": "@string(activity('Obtener estado de ejecucion pipeline').output.status)",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Set pipeline finished",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Set RunStatus Pipeline",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ExecutePipelineFinished",
-										"value": {
-											"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Wait1",
-									"type": "Wait",
-									"dependsOn": [
-										{
-											"activity": "Stored procedure1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": {
-											"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),1,1)",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Stored procedure1",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "Set pipeline finished",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[USP_INSERT_tmpselect]",
-										"storedProcedureParameters": {
-											"ID": {
-												"value": "1",
-												"type": "Int32"
-											},
-											"VALOR": {
-												"value": {
-													"value": "@variables('RunStatus')",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "lsrcDestination",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ParamDataSourceCode": "desaperreportesgenerales"
-										}
-									}
-								}
-							],
-							"timeout": "0.00:02:00"
-						}
-					},
-					{
-						"name": "Set Url Status Pipeline",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Ejecutar Pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "VarUrlStatusRunIdPipeline",
-							"value": {
-								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlStatusRunIdPipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@runidpipeline',string(activity('Ejecutar Pipeline').output.runId)),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Ejecutar Pipeline",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Set Url Execute Pipeline",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"method": "POST",
-							"headers": {},
-							"url": {
-								"value": "@variables('VarUrlExecutePipeline')",
-								"type": "Expression"
-							},
-							"body": {
-								"value": "@concat('{  \"ParamExecuteLoadCode\": \"',pipeline().parameters.ParamExecuteLoadCode,'\",\"ParamExecuteLoadId\":\"', pipeline().parameters.ParamExecuteLoadId,'\",\"ParamEnvironment\":\"', pipeline().parameters.ParamEnvironment,'\"}')",
-								"type": "Expression"
-							},
-							"authentication": {
-								"type": "MSI",
-								"resource": "https://management.azure.com"
-							}
-						}
-					},
-					{
-						"name": "Set Url Execute Pipeline",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "VarUrlExecutePipeline",
-							"value": {
-								"value": "@replace(replace(replace(replace(pipeline().parameters.ParamUrlExecutePipeline, '@subscriptionId', pipeline().parameters.ParamSubscription), '@resourceGroup', pipeline().parameters.ParamResourceGroup),'@pipelinename',pipeline().parameters.ParamPipelineNameADF),'@adfName',pipeline().parameters.ParamInstanceNameADF)",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"ParamSubscription": {
-						"type": "string",
-						"defaultValue": "998fac29-2308-4c82-85bb-aef2aa738815"
-					},
-					"ParamResourceGroup": {
-						"type": "string",
-						"defaultValue": "rgTriggerPipelineADFfromAzureSql"
-					},
-					"ParamInstanceNameADF": {
-						"type": "string",
-						"defaultValue": "adfIntegrationAzureSqlADFTest"
-					},
-					"ParamPipelineNameADF": {
-						"type": "string",
-						"defaultValue": "pipcopycsvfile"
-					},
-					"ParamUrlExecutePipeline": {
-						"type": "string",
-						"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelines/@pipelinename/createRun?api-version=2018-06-01"
-					},
-					"ParamUrlStatusRunIdPipeline": {
-						"type": "string",
-						"defaultValue": "https://management.azure.com/subscriptions/@subscriptionId/resourceGroups/@resourceGroup/providers/Microsoft.DataFactory/factories/@adfName/pipelineruns/@runidpipeline?api-version=2018-06-01"
-					},
-					"ParamExecuteLoadCode": {
-						"type": "string"
-					},
-					"ParamExecuteLoadId": {
-						"type": "string"
-					},
-					"ParamEnvironment": {
-						"type": "string"
-					},
-					"ParamCountryCode": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RunId": {
-						"type": "String",
-						"defaultValue": "0"
-					},
-					"ExecutePipelineFinished": {
-						"type": "String",
-						"defaultValue": "false"
-					},
-					"RunStatus": {
-						"type": "String",
-						"defaultValue": "0"
-					},
-					"VarUrlStatusRunIdPipeline": {
-						"type": "String",
-						"defaultValue": "0"
-					},
-					"VarUrlExecutePipeline": {
-						"type": "String",
-						"defaultValue": "0"
-					}
-				},
-				"folder": {
-					"name": "Test"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/lsrcDestination')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipcopycsvfile')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "FilesAzureBlobStorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "FilesDestinationAzureBlobStorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Test"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FilesAzureBlobStorage')]",
-				"[concat(variables('factoryId'), '/datasets/FilesDestinationAzureBlobStorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipcopycsvfile_copy1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "FilesAzureBlobStorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "FilesDestinationAzureBlobStorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Test"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FilesAzureBlobStorage')]",
-				"[concat(variables('factoryId'), '/datasets/FilesDestinationAzureBlobStorage')]"
 			]
 		}
 	]
