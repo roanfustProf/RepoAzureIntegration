@@ -200,7 +200,7 @@
 			},
 			"ParamExecuteLoadCode": {
 				"type": "string",
-				"defaultValue": "ODS_CargaDif_PeriodWeekly_Copia"
+				"defaultValue": "ODS_Copia_Temporary_Core_PeriodWeekly"
 			},
 			"ParamExecuteLoadId": {
 				"type": "string",
