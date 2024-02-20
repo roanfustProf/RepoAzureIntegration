@@ -8,6 +8,12 @@
 				"ParamDataSourceCode": "desaperyanbalreportsods"
 			}
 		},
+		"parameters": {
+			"ParamDataSourceCode": {
+				"type": "string",
+				"defaultValue": "0"
+			}
+		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": []
