@@ -74,6 +74,10 @@
 							"tablename": {
 								"value": "@json(variables('varListParameters')).tableNameDestination",
 								"type": "Expression"
+							},
+							"ParamDataSourceCode": {
+								"value": "@json(variables('varListParameters')).dsrcDestination",
+								"type": "Expression"
 							}
 						}
 					}
