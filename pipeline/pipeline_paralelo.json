@@ -79,7 +79,7 @@
 											"value": "@item().clave",
 											"type": "Expression"
 										},
-										"type": "Int32"
+										"type": "String"
 									},
 									"orden": {
 										"value": {
