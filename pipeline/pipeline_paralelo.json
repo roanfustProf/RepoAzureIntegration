@@ -1,0 +1,9 @@
+{
+	"name": "pipeline_paralelo",
+	"properties": {
+		"folder": {
+			"name": "YanbalPipelines/YanbalODS_BusinessApp"
+		},
+		"annotations": []
+	}
+}
