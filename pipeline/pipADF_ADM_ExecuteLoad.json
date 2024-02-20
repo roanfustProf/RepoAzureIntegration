@@ -3,39 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set RunId pipeline",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Ejecutar Pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "RunId",
-					"value": {
-						"value": "@string(activity('Ejecutar Pipeline').output.runId)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Finalizacion ejecucion pipeline",
 				"type": "Until",
 				"dependsOn": [
-					{
-						"activity": "Set RunId pipeline",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
 					{
 						"activity": "Set Url Status Pipeline",
 						"dependencyConditions": [
@@ -118,25 +88,6 @@
 								"variableName": "ExecutePipelineFinished",
 								"value": {
 									"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Wait1",
-							"type": "Wait",
-							"dependsOn": [
-								{
-									"activity": "Set pipeline finished",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"waitTimeInSeconds": {
-									"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),1,1)",
 									"type": "Expression"
 								}
 							}
