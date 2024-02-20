@@ -136,7 +136,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"waitTimeInSeconds": {
-									"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),1,1)",
+									"value": "@if(equals(variables('ExecutePipelineFinished'), 'True'),0,1)",
 									"type": "Expression"
 								}
 							}
