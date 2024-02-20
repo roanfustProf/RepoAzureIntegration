@@ -29,7 +29,8 @@
 							"tablename": "0",
 							"ParamDataSourceCode": "desaperreportesgenerales"
 						}
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
