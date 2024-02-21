@@ -77,7 +77,7 @@
 						},
 						"LoadDateSSIS": {
 							"value": {
-								"value": "@convertTimeZone(utcNow(),'UTC','S.A. Pacific Standard Time', 'dd-MMM-yyyy hh:mm:ss tt')",
+								"value": "@convertTimeZone(utcNow(),'UTC','S.A. Pacific Standard Time')",
 								"type": "Expression"
 							},
 							"type": "DateTime"
