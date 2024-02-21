@@ -491,7 +491,8 @@
 				"defaultValue": "PE"
 			},
 			"ParamExecuteLoadId": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "20000"
 			},
 			"ParamdsrcIntegration": {
 				"type": "string",
