@@ -39,7 +39,7 @@
 					{
 						"activity": "Stored procedure1",
 						"dependencyConditions": [
-							"Failed"
+							"Skipped"
 						]
 					}
 				],
