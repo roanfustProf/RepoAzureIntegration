@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute Query SQL",
+				"name": "04_Execute Query SQL",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Generar lista parametros",
+						"activity": "03_Generar lista parametros",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				}
 			},
 			{
-				"name": "Start Process - Save Log",
+				"name": "01_Start Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -126,11 +126,11 @@
 				}
 			},
 			{
-				"name": "End Process - Save Log",
+				"name": "05_End Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Execute Query SQL",
+						"activity": "04_Execute Query SQL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -214,11 +214,11 @@
 				}
 			},
 			{
-				"name": "GET Step configuration",
+				"name": "02_GET Step configuration",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Start Process - Save Log",
+						"activity": "01_Start Process - Save Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -256,11 +256,11 @@
 				}
 			},
 			{
-				"name": "Generar lista parametros",
+				"name": "03_Generar lista parametros",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "GET Step configuration",
+						"activity": "02_GET Step configuration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -319,13 +319,12 @@
 				}
 			},
 			{
-				"name": "Registrar error",
+				"name": "05_End Process - Save Log Error",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "End Process - Save Log",
+						"activity": "05_End Process - Save Log",
 						"dependencyConditions": [
-							"Skipped",
 							"Failed"
 						]
 					}
@@ -338,6 +337,64 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[AdminPackage].[CaptureLogPackage]",
+					"storedProcedureParameters": {
+						"Comments": {
+							"value": {
+								"value": "@concat('Package End Proces','')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"CountryCode": {
+							"value": {
+								"value": "@pipeline().parameters.ParamCountryCode",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Enviroment": {
+							"value": {
+								"value": "@pipeline().parameters.ParamEnvironment",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"ExecuteLoadConfiguration": {
+							"value": {
+								"value": "@pipeline().parameters.ParamExecuteLoadId",
+								"type": "Expression"
+							},
+							"type": "Int16"
+						},
+						"LoadDateSSIS": {
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"LogEventType": {
+							"value": "1",
+							"type": "Int16"
+						},
+						"PackageName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TaskName": {
+							"value": {
+								"value": "@concat('End Process - Save Log')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
 				"linkedServiceName": {
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
