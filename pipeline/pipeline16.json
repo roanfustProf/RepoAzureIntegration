@@ -77,7 +77,7 @@
 						},
 						"LoadDateSSIS": {
 							"value": {
-								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"value": "@convertTimeZone(utcNow(), 'UTC', 'PE', 'dd-MMM-yyyy hh:mm:ss tt')",
 								"type": "Expression"
 							},
 							"type": "DateTime"
