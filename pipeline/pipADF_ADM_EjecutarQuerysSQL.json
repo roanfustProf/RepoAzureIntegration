@@ -206,7 +206,10 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -334,7 +337,17 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lsrcDestination",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"parameters": {
