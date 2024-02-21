@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "USP_LEER_tmpLista2"
+					"storedProcedureName": "USP_LEER_tmpLista9"
 				},
 				"linkedServiceName": {
 					"referenceName": "lsrcDestination",
