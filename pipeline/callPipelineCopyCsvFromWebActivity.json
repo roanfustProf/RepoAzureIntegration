@@ -17,6 +17,10 @@
 				"typeProperties": {
 					"method": "POST",
 					"url": "https://management.azure.com/subscriptions/0784505e-eb7a-4875-99ce-e87a55053531/resourceGroups/rg_wirbi_rfuster/providers/Microsoft.DataFactory/factories/adfIntegrationAzureSqlADFTest2/pipelines/pipcopycsvfile/createRun?api-version=2018-06-01",
+					"body": {
+						"value": "@concat('{','}')",
+						"type": "Expression"
+					},
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://management.azure.com"

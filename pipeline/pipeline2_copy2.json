@@ -75,6 +75,10 @@
 						"value": "@variables('VarUrlExecutePipeline')",
 						"type": "Expression"
 					},
+					"body": {
+						"value": "@concat('{','}')",
+						"type": "Expression"
+					},
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://management.azure.com"
