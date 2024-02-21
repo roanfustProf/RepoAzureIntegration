@@ -49,7 +49,7 @@
 					"storedProcedureParameters": {
 						"Comments": {
 							"value": {
-								"value": "@concat('Package End Proces','')",
+								"value": "@{activity('Stored procedure1').error.message}",
 								"type": "Expression"
 							},
 							"type": "String"
