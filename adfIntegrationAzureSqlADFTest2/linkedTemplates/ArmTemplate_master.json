@@ -15,11 +15,11 @@
 			"type": "string",
 			"defaultValue": "@{linkedService().ParamUrlKeyVault}"
 		},
-		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
+		"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "@linkedService().ParamDataSourceCode"
 		},
-		"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
+		"lsrcDestination_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "@linkedService().ParamDataSourceCode"
 		},
@@ -56,11 +56,11 @@
 					"lazurekv_desa_per_properties_typeProperties_baseUrl": {
 						"value": "[parameters('lazurekv_desa_per_properties_typeProperties_baseUrl')]"
 					},
-					"lsrcDestination_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('lsrcDestination_properties_typeProperties_connectionString_secretName')]"
-					},
 					"lsSqlServerDataBase_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('lsSqlServerDataBase_properties_typeProperties_connectionString_secretName')]"
+					},
+					"lsrcDestination_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('lsrcDestination_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
