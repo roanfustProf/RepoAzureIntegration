@@ -342,7 +342,7 @@
 					"storedProcedureParameters": {
 						"Comments": {
 							"value": {
-								"value": "@concat('Package End Proces','')",
+								"value": "@{activity('05_End Process - Save Log').error.message}",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -370,13 +370,13 @@
 						},
 						"LoadDateSSIS": {
 							"value": {
-								"value": "@formatDateTime(utcnow(), 'dd-MMM-yyyy hh:mm:ss tt')",
+								"value": "@convertTimeZone(utcNow(),'UTC','SA Pacific Standard Time', 'dd-MMM-yyyy hh:mm:ss tt')",
 								"type": "Expression"
 							},
 							"type": "DateTime"
 						},
 						"LogEventType": {
-							"value": "1",
+							"value": "2",
 							"type": "Int16"
 						},
 						"PackageName": {
@@ -399,10 +399,7 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": {
-							"value": "@pipeline().parameters.ParamdsrcIntegration",
-							"type": "Expression"
-						}
+						"ParamDataSourceCode": "desaperreportesgenerales"
 					}
 				}
 			}

@@ -63,21 +63,21 @@
 						},
 						"CountryCode": {
 							"value": {
-								"value": "'PE'",
+								"value": "@pipeline().parameters.ParamCountryCode",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"Enviroment": {
 							"value": {
-								"value": "'DESA_PER''",
+								"value": "@pipeline().parameters.ParamEnvironment",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"ExecuteLoadConfiguration": {
 							"value": {
-								"value": "20000",
+								"value": "@pipeline().parameters.ParamExecuteLoadId",
 								"type": "Expression"
 							},
 							"type": "Int16"
@@ -90,7 +90,7 @@
 							"type": "DateTime"
 						},
 						"LogEventType": {
-							"value": "1",
+							"value": "2",
 							"type": "Int16"
 						},
 						"PackageName": {
@@ -128,10 +128,23 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var1",
-					"value": "t"
+					"value": 1
 				}
 			}
 		],
+		"parameters": {
+			"ParamCountryCode": {
+				"type": "string",
+				"defaultValue": "PE"
+			},
+			"ParamEnvironment": {
+				"type": "string",
+				"defaultValue": "DESA_PER"
+			},
+			"ParamExecuteLoadId": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"var1": {
 				"type": "Integer"
