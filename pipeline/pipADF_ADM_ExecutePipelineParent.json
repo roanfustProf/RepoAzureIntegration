@@ -13,12 +13,6 @@
 						]
 					},
 					{
-						"activity": "Set varInstanceNameADF",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
 						"activity": "Set varUrlStatusRunIdPipeline",
 						"dependencyConditions": [
 							"Succeeded"
@@ -96,7 +90,7 @@
 										"type": "Expression"
 									},
 									"ParamInstanceNameADF": {
-										"value": "@variables('varInstanceNameADF')",
+										"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
 										"type": "Expression"
 									},
 									"ParamPipelineNameADF": {
@@ -157,30 +151,6 @@
 					"variableName": "varUrlExecutePipeline",
 					"value": {
 						"value": "@string(activity('GET ADF configuration').output.firstRow.UrlExecutePipeline)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set varInstanceNameADF",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GET ADF configuration",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varInstanceNameADF",
-					"value": {
-						"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
 						"type": "Expression"
 					}
 				}
@@ -440,10 +410,6 @@
 			}
 		},
 		"variables": {
-			"varInstanceNameADF": {
-				"type": "String",
-				"defaultValue": "0"
-			},
 			"varUrlExecutePipeline": {
 				"type": "String",
 				"defaultValue": "0"
