@@ -7,18 +7,6 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Set varSubscription",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Set varResourceGroup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
 						"activity": "Set varUrlExecutePipeline",
 						"dependencyConditions": [
 							"Succeeded"
@@ -100,11 +88,11 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"ParamSubscription": {
-										"value": "@variables('varSubscription')",
+										"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
 										"type": "Expression"
 									},
 									"ParamResourceGroup": {
-										"value": "@variables('varResourceGroup')",
+										"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
 										"type": "Expression"
 									},
 									"ParamInstanceNameADF": {
@@ -147,54 +135,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Set varSubscription",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GET ADF configuration",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varSubscription",
-					"value": {
-						"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set varResourceGroup",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GET ADF configuration",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varResourceGroup",
-					"value": {
-						"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
-						"type": "Expression"
-					}
 				}
 			},
 			{
@@ -500,14 +440,6 @@
 			}
 		},
 		"variables": {
-			"varSubscription": {
-				"type": "String",
-				"defaultValue": "0"
-			},
-			"varResourceGroup": {
-				"type": "String",
-				"defaultValue": "0"
-			},
 			"varInstanceNameADF": {
 				"type": "String",
 				"defaultValue": "0"
