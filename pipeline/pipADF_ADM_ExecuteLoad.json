@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Finalizacion ejecucion pipeline",
+				"name": "05_Finalizacion ejecucion pipeline",
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "Set Url Status Pipeline",
+						"activity": "04_Set Url Status Pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -97,11 +97,11 @@
 				}
 			},
 			{
-				"name": "Set Url Status Pipeline",
+				"name": "04_Set Url Status Pipeline",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Ejecutar Pipeline",
+						"activity": "03_Ejecutar Pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -121,11 +121,11 @@
 				}
 			},
 			{
-				"name": "Ejecutar Pipeline",
+				"name": "03_Ejecutar Pipeline",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Set Url Execute Pipeline",
+						"activity": "02_Set Url Execute Pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -156,11 +156,11 @@
 				}
 			},
 			{
-				"name": "Set Url Execute Pipeline",
+				"name": "02_Set Url Execute Pipeline",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Start Process - Save Log",
+						"activity": "01_Start Process - Save Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -180,7 +180,7 @@
 				}
 			},
 			{
-				"name": "Start Process - Save Log",
+				"name": "01_Start Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -261,11 +261,11 @@
 				}
 			},
 			{
-				"name": "End Process - Save Log",
+				"name": "06_End Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Finalizacion ejecucion pipeline",
+						"activity": "05_Finalizacion ejecucion pipeline",
 						"dependencyConditions": [
 							"Succeeded"
 						]
