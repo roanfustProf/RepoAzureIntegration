@@ -162,7 +162,12 @@
 					},
 					"dataset": {
 						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"schematablename": "0",
+							"tablename": "0",
+							"ParamDataSourceCode": "0"
+						}
 					}
 				}
 			},
