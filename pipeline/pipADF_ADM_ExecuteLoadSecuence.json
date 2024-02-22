@@ -372,7 +372,10 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -457,7 +460,10 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -542,7 +548,10 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -627,7 +636,10 @@
 					"referenceName": "lsrcDestination",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"ParamDataSourceCode": "desaperreportesgenerales"
+						"ParamDataSourceCode": {
+							"value": "@pipeline().parameters.ParamdsrcIntegration",
+							"type": "Expression"
+						}
 					}
 				}
 			}
