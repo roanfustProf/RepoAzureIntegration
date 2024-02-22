@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Load ExecuteLoadSequence",
+				"name": "02_Load ExecuteLoadSequence",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Start Process - Save Log",
+						"activity": "01_Start Process - Save Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -42,11 +42,11 @@
 				}
 			},
 			{
-				"name": "Childs Pipelines",
+				"name": "03_Childs Pipelines",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Load ExecuteLoadSequence",
+						"activity": "02_Load ExecuteLoadSequence",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -55,7 +55,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
+						"value": "@activity('02_Load ExecuteLoadSequence').output.resultSets[0].rows",
 						"type": "Expression"
 					},
 					"isSequential": false,
@@ -127,7 +127,7 @@
 				}
 			},
 			{
-				"name": "Start Process - Save Log",
+				"name": "01_Start Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -208,11 +208,11 @@
 				}
 			},
 			{
-				"name": "End Process - Save Log",
+				"name": "04_End Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Childs Pipelines",
+						"activity": "03_Childs Pipelines",
 						"dependencyConditions": [
 							"Succeeded"
 						]
