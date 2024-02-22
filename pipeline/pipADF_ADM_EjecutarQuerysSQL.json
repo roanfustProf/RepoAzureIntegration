@@ -269,7 +269,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GET Step configuration').output.resultSets[0].rows",
+						"value": "@activity('02_GET Step configuration').output.resultSets[0].rows",
 						"type": "Expression"
 					},
 					"isSequential": true,
