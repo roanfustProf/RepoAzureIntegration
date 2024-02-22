@@ -7,7 +7,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Set varUrlStatusRunIdPipeline",
+						"activity": "GET ADF configuration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -96,7 +96,7 @@
 										"type": "Expression"
 									},
 									"ParamUrlStatusRunIdPipeline": {
-										"value": "@variables('varUrlStatusRunIdPipeline')",
+										"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
 										"type": "Expression"
 									},
 									"ParamExecuteLoadCode": {
@@ -123,30 +123,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Set varUrlStatusRunIdPipeline",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "GET ADF configuration",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "varUrlStatusRunIdPipeline",
-					"value": {
-						"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
-						"type": "Expression"
-					}
 				}
 			},
 			{
@@ -377,12 +353,6 @@
 			"ParamdsrcIntegration": {
 				"type": "string",
 				"defaultValue": "desaperreportesgenerales"
-			}
-		},
-		"variables": {
-			"varUrlStatusRunIdPipeline": {
-				"type": "String",
-				"defaultValue": "0"
 			}
 		},
 		"folder": {
