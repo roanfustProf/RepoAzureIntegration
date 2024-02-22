@@ -45,7 +45,7 @@
 							}
 						},
 						{
-							"name": "Set RunStatus Pipeline",
+							"name": "If State Error",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -73,7 +73,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Set RunStatus Pipeline",
+									"activity": "Obtener estado de ejecucion pipeline",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -87,7 +87,7 @@
 							"typeProperties": {
 								"variableName": "ExecutePipelineFinished",
 								"value": {
-									"value": "@if(equals(variables('RunStatus'), 'Queued'),'False',if(equals(variables('RunStatus'), 'InProgress'),'False',if(equals(variables('RunStatus'), 'Canceling'),'False','True')))",
+									"value": "@if(equals(activity('Obtener estado de ejecucion pipeline').output.status, 'Queued'),'False',if(equals(activity('Obtener estado de ejecucion pipeline').output.status, 'InProgress'),'False',if(equals(activity('Obtener estado de ejecucion pipeline').output.status, 'Canceling'),'False','True')))",
 									"type": "Expression"
 								}
 							}
