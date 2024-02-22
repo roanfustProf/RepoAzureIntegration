@@ -918,15 +918,15 @@
 				"type": "String",
 				"defaultValue": "false"
 			},
-			"RunStatus": {
-				"type": "String",
-				"defaultValue": "0"
-			},
 			"VarUrlStatusRunIdPipeline": {
 				"type": "String",
 				"defaultValue": "0"
 			},
 			"VarUrlExecutePipeline": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"RunStatus": {
 				"type": "String",
 				"defaultValue": "0"
 			}
