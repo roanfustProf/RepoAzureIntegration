@@ -1,0 +1,16 @@
+{
+	"name": "j6_uat_db_bol",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=j6-uat-db-bol;initial catalog=BOL_UAT2;user id=usr_app_dm_scp",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIzMDNlYzhiMC1jY2E1LTRjZGUtYTg4MC03MjZhYTFlOGUzYTYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

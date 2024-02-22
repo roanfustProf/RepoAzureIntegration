@@ -1,0 +1,16 @@
+{
+	"name": "SQLAZ_DB_UAT_01",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=sqlaz-db-uat-01.database.windows.net;initial catalog=BAPP-DB-UAT;user id=bapp_admin",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiOWNiZjY4Yi04MTI2LTQ5ZWYtYWQwNy02M2UzMjExNDQ4M2QiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
