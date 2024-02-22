@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Load ExecuteLoadSequence",
+				"name": "03_Load ExecuteLoadSequence",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "GET ADF configuration",
+						"activity": "02_GET ADF configuration",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -42,11 +42,11 @@
 				}
 			},
 			{
-				"name": "Childs Pipelines",
+				"name": "04_Childs Pipelines",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Load ExecuteLoadSequence",
+						"activity": "03_Load ExecuteLoadSequence",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -55,7 +55,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Load ExecuteLoadSequence').output.resultSets[0].rows",
+						"value": "@activity('03_Load ExecuteLoadSequence').output.resultSets[0].rows",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -76,15 +76,15 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"ParamSubscription": {
-										"value": "@string(activity('GET ADF configuration').output.firstRow.SubscriptionId)",
+										"value": "@string(activity('02_GET ADF configuration').output.firstRow.SubscriptionId)",
 										"type": "Expression"
 									},
 									"ParamResourceGroup": {
-										"value": "@string(activity('GET ADF configuration').output.firstRow.ResourceGroup)",
+										"value": "@string(activity('02_GET ADF configuration').output.firstRow.ResourceGroup)",
 										"type": "Expression"
 									},
 									"ParamInstanceNameADF": {
-										"value": "@string(activity('GET ADF configuration').output.firstRow.ADFInstanceName)",
+										"value": "@string(activity('02_GET ADF configuration').output.firstRow.ADFInstanceName)",
 										"type": "Expression"
 									},
 									"ParamPipelineNameADF": {
@@ -92,11 +92,11 @@
 										"type": "Expression"
 									},
 									"ParamUrlExecutePipeline": {
-										"value": "@string(activity('GET ADF configuration').output.firstRow.UrlExecutePipeline)",
+										"value": "@string(activity('02_GET ADF configuration').output.firstRow.UrlExecutePipeline)",
 										"type": "Expression"
 									},
 									"ParamUrlStatusRunIdPipeline": {
-										"value": "@string(activity('GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
+										"value": "@string(activity('02_GET ADF configuration').output.firstRow.UrlStatusRunIdPipeline)",
 										"type": "Expression"
 									},
 									"ParamExecuteLoadCode": {
@@ -126,11 +126,11 @@
 				}
 			},
 			{
-				"name": "GET ADF configuration",
+				"name": "02_GET ADF configuration",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Start Process - Save Log",
+						"activity": "01_Start Process - Save Log",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -172,7 +172,7 @@
 				}
 			},
 			{
-				"name": "Start Process - Save Log",
+				"name": "01_Start Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -253,11 +253,11 @@
 				}
 			},
 			{
-				"name": "End Process - Save Log",
+				"name": "04_End Process - Save Log",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Childs Pipelines",
+						"activity": "04_Childs Pipelines",
 						"dependencyConditions": [
 							"Succeeded"
 						]
